@@ -36,15 +36,15 @@ class RegisterRequest extends FormRequest
             'name.max' => '名前は20文字以内で入力してください',
             'name.string' => '名前は文字で入力してください',
             'email.required' => 'メールアドレスを入力してください',
-            'email.email' => 'メールアドレスの形式で入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
             'email.unique' => 'このメールアドレスは既に登録されています',
             'email.max' => 'メールアドレスは255文字以内で入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
             'password.string' => 'パスワードは文字で入力してください',
             'password_confirmation.required' => '確認用パスワードを入力してください',
-            'password_confirmation.min' => 'パスワードは8文字以上で入力してください',
-            'password_confirmation.string' => 'パスワードは文字で入力してください',
+            'password_confirmation.min' => '確認用パスワードは8文字以上で入力してください',
+            'password_confirmation.string' => '確認用パスワードは文字で入力してください',
             'password_confirmation.same' => 'パスワードと一致しません',
         ];
     }

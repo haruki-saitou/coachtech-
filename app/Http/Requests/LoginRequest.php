@@ -38,6 +38,5 @@ class LoginRequest extends FormRequest
             'password.string' => 'パスワードは文字で入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
         ];
-
     }
 }
