@@ -15,12 +15,10 @@ class ConditionSeeder extends Seeder
     public function run(): void
     {
         $conditions = [
-            '新品・未使用',
-            '未使用に近い',
+            '良好',
             '目立った傷や汚れなし',
             'やや傷や汚れあり',
-            '傷や汚れあり',
-            '全体的に状態が悪い',
+            '状態が悪い',
         ];
 
         foreach ($conditions as $conditionName) {

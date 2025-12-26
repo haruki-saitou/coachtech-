@@ -30,6 +30,7 @@ class CategorySeeder extends Seeder
             'おもちゃ',
             'ハンドメイド',
             'アクセサリー',
+            '時計',
             '自転車',
             'スマホ・タブレット',
             'カメラ',
