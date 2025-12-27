@@ -21,7 +21,7 @@
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | name               | varchar(255)     |             |            | ◯        |                |
 | price              | unsigned integer |             |            | ◯        |                |
-| brand_name         | verchar(255)     |             |            |          |                |
+| brand_name         | varchar(255)     |             |            |          |                |
 | description        | text             |             |            | ◯        |                |
 | image_path         | varchar(255)     |             |            | ◯        |                |
 | category_id        | unsigned bigint  |             |            | ◯        | categories(id) |
