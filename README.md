@@ -95,7 +95,8 @@ DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=sail
 DB_PASSWORD=password
-```  
+```
+※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応済みです。  
 - ```bash
   ./vendor/bin/sail up -d
   ```  
