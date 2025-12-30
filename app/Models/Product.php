@@ -8,7 +8,6 @@ class Product extends Model
 {
     protected $fillable = [
         'user_id',
-        'category_id',
         'condition_id',
         'name',
         'price',
@@ -22,9 +21,9 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
     public function condition()
     {
@@ -37,5 +36,9 @@ class Product extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }
