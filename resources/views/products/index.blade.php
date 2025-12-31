@@ -3,12 +3,12 @@
 @section('content')
     <div class="border-b-2 border-gray-300 mt-8">
         <div class="max-w-7xl mx-auto px-4 flex gap-10 pb-2 pt-4">
-            <a href="{{ route('product.index') }}" class="ml-12 text-lg font-bold text-red-500 cursor-pointer">
+            <a href="{{ route('product.index') }}" class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') !== 'mylist' ? 'text-red-500' : 'text-gray-500' }}">
                 おすすめ
             </a>
 
             <a href="{{ route('product.index', ['tab' => 'mylist']) }}"
-                class="ml-12 text-lg font-bold text-gray-500 cursor-pointer hover:text-black transition">
+                class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') === 'mylist' ? 'text-red-500' : 'text-gray-500 hover:text-black transition' }}">
                 マイリスト
             </a>
         </div>

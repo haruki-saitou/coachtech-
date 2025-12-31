@@ -40,6 +40,16 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function () {
             return view('auth.login');
         });
+        Fortify::verifyEmailView(function() {
+            return view('auth.verify-email');
+        });
+
+        $this->app->instance(\Laravel\Fortify\Contracts\VerifyEmailResponse::class, new class implements \Laravel\Fortify\Contracts\VerifyEmailResponse {
+            public function toResponse($request)
+            {
+                return redirect()->route('profile.edit')->with('status', 'メールアドレスが認証されました。');
+            }
+        });
 
 
         RateLimiter::for('login', function (Request $request) {

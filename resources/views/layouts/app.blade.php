@@ -16,7 +16,7 @@
                 <img src="{{ asset('images/COACHTECH.png') }}" alt="COACHTECH" class="h-6 md:h-8 ml-2">
             </a>
         </div>
-        @if (!Route::is('login') && !Route::is('register'))
+        @if (!Route::is('login') && !Route::is('register') && !Route::is('verification.notice'))
             <div class="flex-1 w-full md:max-w-xl lg:max-w-2xl mx-auto">
                 <form action="{{ route('product.index') }}" method="GET" class="relative">
                     <input type="text" name="keyword"

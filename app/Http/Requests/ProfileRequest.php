@@ -22,27 +22,26 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:2048'],
+            'image_path' => ['nullable', 'image', 'mimes:jpeg,png', 'max:2048'],
             'name' => ['required', 'string', 'max:20'],
-            'postal_code' => ['required', 'string', 'size:8', 'regex:/^[0-9]{3}-[0-9]{4}$/'],
-            'address' => ['required', 'string', 'max:255'],
+            'post_code' => ['nullable', 'string', 'size:8', 'regex:/^[0-9]{3}-[0-9]{4}$/'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'building' => ['nullable', 'string', 'max:255'],
         ];
     }
 
     public function messages()
     {
         return [
-            'profile_image.mimes' => 'jpeg,png形式の画像を選択してください',
-            'profile_image.max' => '画像は2MB以内で選択してください',
-            'name.required' => '名前を入力してください',
-            'name.string' => '名前は文字で入力してください',
-            'name.max' => '名前は20文字以内で入力してください',
-            'postal_code.required' => '郵便番号を入力してください',
-            'postal_code.size' => '郵便番号はハイフンを含めた8文字で入力してください',
-            'postal_code.regex' => '郵便番号は000-0000の形式で入力してください',
-            'address.required' => '住所を入力してください',
-            'address.string' => '住所は文字で入力してください',
-            'address.max' => '住所は255文字以内で入力してください',
+            'image_path.mimes' => 'jpeg,png形式の画像を選択してください',
+            'image_path.max' => '画像は2MB以内で選択してください',
+            'name.required' => '名前を入力してください',
+            'name.string' => '名前は文字で入力してください',
+            'name.max' => '名前は20文字以内で入力してください',
+            'post_code.size' => '郵便番号はハイフンを含めた8文字で入力してください',
+            'post_code.regex' => '郵便番号は000-0000の形式で入力してください',
+            'address.string' => '住所は文字で入力してください',
+            'address.max' => '住所は255文字以内で入力してください',
         ];
     }
 }

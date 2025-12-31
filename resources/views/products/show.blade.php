@@ -62,10 +62,17 @@
 
                 {{-- 購入手続きボタン：ログイン前でも赤色で表示 --}}
                 <div class="mb-10">
-                    <a href="{{ route('purchase.show', ['purchase_id' => $product->id]) }}"
-                        class="block w-full text-center bg-red-500 text-white font-bold py-3 rounded-md hover:bg-red-600 transition">
-                        購入手続きへ
-                    </a>
+                    @if ($product->is_sold)
+                        <button disabled
+                            class="block w-full text-center bg-gray-400 text-white font-bold py-3 rounded-md cursor-not-allowed">
+                            売り切れました
+                        </button>
+                    @else
+                        <a href="{{ route('purchase.show', ['purchase_id' => $product->id]) }}"
+                            class="block w-full text-center bg-red-500 text-white font-bold py-3 rounded-md hover:bg-red-600 transition">
+                            購入手続きへ
+                        </a>
+                    @endif
                 </div>
 
                 {{-- 商品説明 --}}
@@ -119,7 +126,11 @@
                         <textarea name="comment" rows="6" class="w-full border border-gray-300 rounded-md p-3 mb-4"></textarea>
                         <button type="submit"
                             class="w-full bg-red-400 text-white font-bold py-3 rounded-md hover:bg-red-500 transition">
-                            コメントを送信する
+                            @auth
+                                コメントを送信する
+                            @else
+                                ログインしてコメントする
+                            @endauth
                         </button>
                     </form>
                 </div>
