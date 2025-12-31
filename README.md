@@ -71,22 +71,42 @@
 | updated_at          | timestamp        |             |            |          |                |
 
 
+| Likesテーブル     |                  |             |            |          |                |
+|--------------------|------------------|-------------|------------|----------|----------------|
+| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| id                 | unsigned bigint  | ◯           |            | ◯        |                |
+| user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
+| product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
+| created_at          | timestamp        |             |            |          |                |
+| updated_at          | timestamp        |             |            |          |                |
+
+
+| category_productテーブル     |                  |             |            |          |                |
+|--------------------|------------------|-------------|------------|----------|----------------|
+| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| id                 | unsigned bigint  | ◯           |            | ◯        |                |
+| category_id        | unsigned bigint  |             |            | ◯        | categories(id)  |
+| product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
+| created_at          | timestamp        |             |            |          |                |
+| updated_at          | timestamp        |             |            |          |                |
+
+
 ## 環境構築　　  
 
 ### Dockerビルド  
 - 作業ディレクトリ上に移動
-- ```bash
+```bash
   git clone git@github.com:haruki-saitou/coachtech-frima.git
-  ```  
-- ```bash
+```  
+```bash
   docker compose up -d --build
-  ```  
+```  
 
 ### Laravel環境構築  
 
-- ```bash
+```bash
   cp .env.example .env
-  ```
+```
 下記の内容に環境変数を変更  
 ```bash
 DB_CONNECTION=mysql
@@ -97,24 +117,34 @@ DB_USERNAME=sail
 DB_PASSWORD=password
 ```
 ※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応済みです。  
-- ```bash
+```bash
   ./vendor/bin/sail up -d
-  ```  
-- ```bash
+```  
+```bash
   ./vendor/bin/sail composer install
-  ```  
-- ```bash
+```  
+```bash
   ./vendor/bin/sail artisan key:generate
-  ```
-- ```bash
+```  
+フロントエンドのライブラリ（Tailwindなど）をインストール  
+```bash
+  ./vendor/bin/sail npm install
+```  
+CSS/JavaScriptをビルド  
+```bash
+  ./vendor/bin/sail npm run build
+```
+```bash
   ./vendor/bin/sail artisan storage:link
-- ```bash
+```
+```bash
   ./vendor/bin/sail artisan migrate:fresh --seed
-  ```  
+```  
   
 ## 開発環境　  
 - 会員登録画面: http://localhost/register  
 - ログイン画面: http://localhost/login  
+- 商品一覧画面: http://localhost/  
 - phpMyAdmin: http://localhost:8080/  
   
 ## 使用技術（実行環境）  
