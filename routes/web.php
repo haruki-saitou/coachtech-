@@ -9,8 +9,8 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'register'])->name('register');
+// Route::get('/login', [AuthController::class, 'login'])->name('login');
+// Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
 Route::get('/products/{product_id}', [ProductController::class, 'show'])->name('product.show');
 

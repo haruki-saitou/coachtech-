@@ -24,8 +24,8 @@ class RegisterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:20'],
             'email' => ['required', 'email', 'unique:users,email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-            'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:8']
         ];
     }
 
@@ -42,10 +42,10 @@ class RegisterRequest extends FormRequest
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
             'password.string' => 'パスワードは文字で入力してください',
+            'confirmed' => 'パスワードと一致しません',
             'password_confirmation.required' => '確認用パスワードを入力してください',
             'password_confirmation.min' => '確認用パスワードは8文字以上で入力してください',
             'password_confirmation.string' => '確認用パスワードは文字で入力してください',
-            'password_confirmation.same' => 'パスワードと一致しません',
         ];
     }
 }
