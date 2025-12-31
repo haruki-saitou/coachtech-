@@ -5,13 +5,17 @@
 ※全体設計として、ER図に基づき「1対多」のリレーションを構成しています。
 | Usersテーブル          |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
 | email              | varchar(255)     |             | ◯          | ◯        |                |
 | password           | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| image_path         | varchar(255)     |             |            |          |                |
+| post_code          | varchar(255)     |             |            | ◯        |                |
+| address            | varchar(255)     |             |            | ◯        |                |
+| building           | varchar(255)     |             |            |          |                |
+| created_at         | timestamp        |             |            |          |                |
+| updated_at         | timestamp        |             |            |          |                |
 
 
 | Productsテーブル       |                  |             |            |          |                |
@@ -139,13 +143,18 @@ CSS/JavaScriptをビルド
 ```
 ```bash
   ./vendor/bin/sail artisan migrate:fresh --seed
-```  
+```
   
 ## 開発環境　  
 - 会員登録画面: http://localhost/register  
 - ログイン画面: http://localhost/login  
 - 商品一覧画面: http://localhost/  
-- phpMyAdmin: http://localhost:8080/  
+- phpMyAdmin: http://localhost:8080/
+
+※メール認証の設定について  
+  開発環境でのメールテストには、Mailtrapを使用しています。  
+  ローカルで動作確認を行う際は、自身のMailtrapアカウントの認証情報を  
+  .env に設定してください。  
   
 ## 使用技術（実行環境）  
 - php 8.5.0  
