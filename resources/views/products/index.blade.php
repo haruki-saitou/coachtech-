@@ -1,13 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+    @error ('success')
+        <div class="alert alert-success" id="flash-success-message">
+            {{ session('success') }}
+        </div>
+    @enderror
+    @if ($is_empty ?? false)
+        <div class="alert alert-danger" id="flash-error-message">
+            「{{ $keyword }}」に一致する商品が見つかりませんでした。
+        </div>
+    @endif
     <div class="border-b-2 border-gray-300 mt-8">
         <div class="max-w-7xl mx-auto px-4 flex gap-10 pb-2 pt-4">
-            <a href="{{ route('product.index') }}" class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') !== 'mylist' ? 'text-red-500' : 'text-gray-500' }}">
+            <a href="{{ route('product.index', ['keyword' => $keyword ?? '']) }}"
+                class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') !== 'mylist' ? 'text-red-500' : 'text-gray-500' }}">
                 おすすめ
             </a>
 
-            <a href="{{ route('product.index', ['tab' => 'mylist']) }}"
+            <a href="{{ route('product.index', ['tab' => 'mylist', 'keyword' => $keyword ?? '']) }}"
                 class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') === 'mylist' ? 'text-red-500' : 'text-gray-500 hover:text-black transition' }}">
                 マイリスト
             </a>

@@ -16,13 +16,13 @@
         <div class="mt-10">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-                <button type="submit" class="text-blue-500 hover:underline text-lg font-medium">
+                <button type="submit" class="text-blue-500 mt-2 hover:underline text-lg font-medium">
                     認証メールを再送する
                 </button>
             </form>
         </div>
         @if (session('status') == 'verification-link-sent')
-            <div class="mt-6 text-green-600 font-bold">
+            <div class="mt-6 text-gray-800 text-center font-bold">
                 新しい認証メールを送信しました。
             </div>
         @endif

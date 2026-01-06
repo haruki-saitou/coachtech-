@@ -5,13 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function index(Request $request, $user_id = null)
     {
-        return view('profiles.index');
+        $user = Auth::user();
+        $tab = $request->input('page');
+        $query = Product::query();
+
+        if ($tab === 'buy'){
+            $query->whereHas('orders', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        } else {
+            $query->where('user_id', $user->id);
+        }
+        $products = $query->get();
+        $is_empty = $products->isEmpty();
+
+        return view('profiles.index', compact('user', 'products', 'is_empty'));
     }
 
     public function edit()
@@ -36,6 +51,6 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('profile.edit')->with('status', 'プロフィールを更新しました。');
+        return redirect()->route('product.index')->with('status', 'プロフィールを更新しました。');
     }
 }

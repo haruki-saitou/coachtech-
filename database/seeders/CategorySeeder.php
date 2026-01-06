@@ -36,7 +36,7 @@ class CategorySeeder extends Seeder
             'カメラ',
             'PC・PC周辺機器',
             'オフィス用品',
-            '楽器',
+            '楽器・機材',
             'ペット用品',
             '食品・飲料',
             '車・バイク用品',

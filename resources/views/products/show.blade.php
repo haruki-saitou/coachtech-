@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 py-10">
-        <div class="flex flex-col md:flex-row gap-12">
+        <div class="flex flex-col md:flex-row my-10 gap-10 md:gap-20 justify-center">
 
             {{-- 左側：画像エリア --}}
-            <div class="w-full md:w-1/2">
+            <div class="w-full md:w-1/2 max-w-[500px]">
                 <div
-                    class="relative w-full aspect-square bg-gray-300 rounded-sm mb-3 overflow-hidden flex items-center justify-center">
+                    class="relative w-full max-w-[500px] aspect-square bg-gray-300 rounded-sm mb-3 overflow-hidden flex items-center justify-center">
                     <span class="text-gray-600 text-xl font-bold">商品画像</span>
                     @if ($product->image_path)
                         <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}"
@@ -24,7 +24,7 @@
             </div>
 
             {{-- 右側：詳細情報エリア --}}
-            <div class="w-full md:w-1/2">
+            <div class="w-full md:w-1/2 max-w-[500px]">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->name }}</h1>
                 <p class="text-sm text-gray-500 mb-4">{{ $product->brand_name ?? 'ブランド名' }}</p>
 
@@ -86,7 +86,7 @@
                     <h2 class="text-xl font-bold mb-4">商品の情報</h2>
                     <div class="flex items-center mb-4">
                         <span class="w-32 font-bold">カテゴリー</span>
-                        <div class="flex gap-2">
+                        <div class="flex gap-3">
                             @forelse ($product->categories as $category)
                                 <span class="bg-gray-200 px-3 py-1 rounded-full text-xs text-gray-600">
                                     {{ $category->name }}
@@ -104,13 +104,26 @@
 
                 {{-- コメント一覧 --}}
                 <div class="mb-10">
+                    {{-- まずは「見出し」を表示します --}}
                     <h2 class="text-xl font-bold mb-6">コメント ({{ $product->comments->count() }})</h2>
+
+                    {{-- ここから「一人ひとりのコメント」を順番に出していきます --}}
                     @foreach ($product->comments as $comment)
                         <div class="mb-6">
                             <div class="flex items-center gap-3 mb-2">
-                                <div class="w-8 h-8 bg-gray-300 rounded-full"></div>
+                                {{-- ここで、先ほど作った「画像を表示するロジック」を入れます --}}
+                                <div class="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
+                                    @if ($comment->user->image_path)
+                                        <img src="{{ asset('storage/' . $comment->user->image_path) }}"
+                                            class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full bg-gray-300"></div>
+                                    @endif
+                                </div>
                                 <span class="font-bold text-sm">{{ $comment->user->name }}</span>
                             </div>
+
+                            {{-- コメントの本文 --}}
                             <div class="bg-gray-100 p-4 rounded-md text-sm">
                                 {{ $comment->comment }}
                             </div>
@@ -125,7 +138,7 @@
                         @csrf
                         <textarea name="comment" rows="6" class="w-full border border-gray-300 rounded-md p-3 mb-4"></textarea>
                         <button type="submit"
-                            class="w-full bg-red-400 text-white font-bold py-3 rounded-md hover:bg-red-500 transition">
+                            class="w-full bg-red-500 text-white font-bold py-3 rounded-md hover:bg-red-600 transition">
                             @auth
                                 コメントを送信する
                             @else

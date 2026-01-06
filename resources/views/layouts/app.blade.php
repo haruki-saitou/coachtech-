@@ -19,7 +19,7 @@
         @if (!Route::is('login') && !Route::is('register') && !Route::is('verification.notice'))
             <div class="flex-1 w-full md:max-w-xl lg:max-w-2xl mx-auto">
                 <form action="{{ route('product.index') }}" method="GET" class="relative">
-                    <input type="text" name="keyword"
+                    <input type="text" name="keyword" value="{{ $keyword ?? ''}}"
                         class="bg-white text-black px-6 py-2 rounded-sm text-base focus:outline-none w-full"
                         placeholder="なにをお探しですか？">
                 </form>

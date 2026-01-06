@@ -17,7 +17,7 @@
             <div class="flex items-center mb-10">
                 {{-- プロフィール画像アップロードエリア --}}
                 <div class="flex items-center space-x-8">
-                    <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                    <div class="w-30 h-30 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                         {{-- 登録済み画像があれば表示、なければグレーの円 --}}
                         @if ($user->image_path)
                             <img src="{{ asset('storage/' . $user->image_path) }}" class="w-full h-full object-cover">
@@ -82,7 +82,7 @@
             </div>
 
             <button type="submit"
-                class="w-full bg-red-500 text-white text-lg font-bold py-3 rounded-md hover:bg-red-600 transition duration-200">
+                class="w-full bg-red-500 text-white text-lg font-bold py-3 rounded-md mt-6 hover:bg-red-600 transition duration-200">
                 更新する
             </button>
         </form>

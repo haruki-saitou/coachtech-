@@ -43,7 +43,7 @@
                 class="w-full bg-red-500 text-white text-lg font-bold mt-10 py-3 rounded-md hover:bg-red-600 transition duration-200">
                 登録する
             </button>
-            <div class="mt-4 text-center">
+            <div class="mt-6 text-center">
                 <a href="{{ route('login') }}" class="text-blue-500">ログインはこちら</a>
             </div>
         </form>

@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchases/address/{purchase_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     //商品出品関連
     Route::get('/sell', [ProductController::class, 'create'])->name('product.create');
+    Route::post('/sell', [ProductController::class, 'store'])->name('product.store');
     //プロフィール関連
     Route::get('/mypage', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
