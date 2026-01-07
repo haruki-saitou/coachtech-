@@ -8,7 +8,7 @@
             <div class="mb-6">
                 <label for="email" class="block text-lg font-bold mb-2">メールアドレス</label>
                 <input type="email" name="email" id="email"
-                    class="w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:border-red-400"
+                    class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700"
                     value="{{ old('email') }}" required>
                 @error('email')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -17,7 +17,7 @@
             <div class="mb-10">
                 <label for="password" class="block text-lg font-bold mb-2">パスワード</label>
                 <input type="password" name="password" id="password"
-                    class="w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:border-red-400" required>
+                    class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700" required>
                 @error('password')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -26,8 +26,8 @@
                 class="w-full bg-red-500 text-lg text-white font-bold mt-6 py-3 rounded-md hover:bg-red-600 transition duration-200">
                 ログインする
             </button>
-            <div class="mt-4 text-center">
-                <a href="{{ route('register') }}" class="text-blue-500">会員登録はこちら</a>
+            <div class="mt-6 text-center">
+                <a href="{{ route('register') }}" class="text-blue-500 hover:text-blue-700 hover:underline">会員登録はこちら</a>
             </div>
         </form>
     </div>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex items-center justify-around my-10 max-w-7xl mx-auto px-4">
+    <div class="flex flex-col md:flex-row items-center justify-around my-14 max-w-[1400px] mx-auto px-24 gap-4">
         {{-- プロフィール画像アップロードエリア --}}
-        <div class="flex items-center space-x-10">
+        <div class="flex items-center space-x-8">
             <div class="w-30 h-30 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                 {{-- 登録済み画像があれば表示、なければグレーの円 --}}
                 @if ($user->image_path)
@@ -12,30 +12,30 @@
                     <div class="w-full h-full bg-gray-300"></div>
                 @endif
             </div>
-            <h2 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h2>
+            <h2 class="text-4xl font-bold text-gray-900 ml-10">{{ $user->name }}</h2>
         </div>
-        <div class="cursor-pointer ml-30">
+        <div class="cursor-pointer flex items-center">
             <a href="{{ route('profile.edit') }}"
-                class="border-2 border-red-500 text-red-500 px-4 py-2 rounded-md font-bold hover:bg-red-50 transition">プロフィールを編集</a>
+                class="border-[1.5px] border-red-400 text-red-400 px-6 py-2 rounded-md text-xl font-bold hover:bg-red-50 transition">プロフィールを編集</a>
         </div>
     </div>
 
 
-    <div class="border-b-2 border-gray-300 mt-8">
-        <div class="max-w-7xl mx-auto px-4 flex gap-10 pb-2 pt-4">
+    <div class="border-b-[1.5px] border-gray-400 w-full">
+        <div class="text-lg font-bold max-w-[1400px] mx-auto px-28 flex gap-14 pb-2 pt-4">
             <a href="{{ route('profile.index', ['page' => 'sell']) }}"
-                class="... {{ request()->query('page') !== 'buy' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                class="... {{ request()->query('page') !== 'buy' ? 'text-red-500' : 'text-gray-500' }}">
                 出品した商品
             </a>
 
             <a href="{{ route('profile.index', ['page' => 'buy']) }}"
-                class="... {{ request()->query('page') === 'buy' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-500' }}">
+                class="... {{ request()->query('page') === 'buy' ? 'text-red-500' : 'text-gray-500' }}">
                 購入した商品
             </a>
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="max-w-[1400px] mx-auto px-4 py-10">
         <div class="grid grid-cols-4 gap-x-8 gap-y-12">
             @if ($is_empty)
                 <p class="text-center text-lg text-gray-600">

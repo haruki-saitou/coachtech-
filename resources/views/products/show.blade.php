@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="max-w-[1400px] mx-auto px-4 py-10">
         <div class="flex flex-col md:flex-row my-10 gap-10 md:gap-20 justify-center">
 
             {{-- 左側：画像エリア --}}
@@ -25,12 +25,12 @@
 
             {{-- 右側：詳細情報エリア --}}
             <div class="w-full md:w-1/2 max-w-[500px]">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $product->name }}</h1>
-                <p class="text-sm text-gray-500 mb-4">{{ $product->brand_name ?? 'ブランド名' }}</p>
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ $product->name }}</h1>
+                <p class="text-md text-gray-500 mb-4">{{ $product->brand_name ?? 'ブランド名' }}</p>
 
                 <div class="mb-4">
-                    <span class="text-2xl font-bold text-gray-900">¥{{ number_format($product->price) }}</span>
-                    <span class="text-xs text-gray-500 ml-1">(税込)</span>
+                    <span class="text-3xl text-gray-900">¥{{ number_format($product->price) }}</span>
+                    <span class="text-xl text-gray-700 ml-1">(税込)</span>
                 </div>
 
                 <div class="flex items-center gap-6 mb-6">
@@ -41,10 +41,10 @@
                             <button type="submit" class="hover:opacity-80 transition">
                                 @if (Auth::check() && $product->likes()->where('user_id', Auth::id())->exists())
                                     {{-- いいね済みの時：クリック後の画像 --}}
-                                    <img src="{{ asset('images/like_on.png') }}" alt="いいね済み" class="w-6 h-6 mx-6">
+                                    <img src="{{ asset('images/like_on.png') }}" alt="いいね済み" class="w-8 h-8 mx-6">
                                 @else
                                     {{-- 未いいねの時：クリック前の画像 --}}
-                                    <img src="{{ asset('images/like_off.png') }}" alt="いいね" class="w-6 h-6 mx-6">
+                                    <img src="{{ asset('images/like_off.png') }}" alt="いいね" class="w-8 h-8 mx-6">
                                 @endif
                             </button>
                         </form>
@@ -54,7 +54,7 @@
                     <div class="flex flex-col items-center">
                         <div class="text-gray-400">
                             {{-- ここに吹き出しのSVG --}}
-                            <img src="{{ asset('images/comment.png') }}" alt="コメント" class="w-6 h-6 mb-1">
+                            <img src="{{ asset('images/comment.png') }}" alt="コメント" class="w-8 h-8 mb-1">
                         </div>
                         <span class="text-xs text-gray-600">{{ $product->comments()->count() }}</span>
                     </div>
@@ -64,12 +64,12 @@
                 <div class="mb-10">
                     @if ($product->is_sold)
                         <button disabled
-                            class="block w-full text-center bg-gray-400 text-white font-bold py-3 rounded-md cursor-not-allowed">
+                            class="block w-full text-center bg-gray-400 text-white font-bold py-3 rounded cursor-not-allowed">
                             売り切れました
                         </button>
                     @else
                         <a href="{{ route('purchase.show', ['purchase_id' => $product->id]) }}"
-                            class="block w-full text-center bg-red-500 text-white font-bold py-3 rounded-md hover:bg-red-600 transition">
+                            class="block w-full text-center bg-red-400 text-white font-bold py-3 rounded hover:bg-red-600 transition">
                             購入手続きへ
                         </a>
                     @endif
@@ -98,7 +98,7 @@
                     </div>
                     <div class="flex items-center">
                         <span class="w-32 font-bold">商品の状態</span>
-                        <span class="text-gray-700">{{ $product->condition->name }}</span>
+                        <span class="text-gray-700 px-3 pb-1 rounded-full">{{ $product->condition->name }}</span>
                     </div>
                 </div>
 
@@ -110,9 +110,9 @@
                     {{-- ここから「一人ひとりのコメント」を順番に出していきます --}}
                     @foreach ($product->comments as $comment)
                         <div class="mb-6">
-                            <div class="flex items-center gap-3 mb-2">
+                            <div class="flex items-center gap-3 mb-4">
                                 {{-- ここで、先ほど作った「画像を表示するロジック」を入れます --}}
-                                <div class="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="w-14 h-14 bg-gray-200 rounded-full overflow-hidden">
                                     @if ($comment->user->image_path)
                                         <img src="{{ asset('storage/' . $comment->user->image_path) }}"
                                             class="w-full h-full object-cover">
@@ -120,11 +120,11 @@
                                         <div class="w-full h-full bg-gray-300"></div>
                                     @endif
                                 </div>
-                                <span class="font-bold text-sm">{{ $comment->user->name }}</span>
+                                <span class="font-bold text-lg">{{ $comment->user->name }}</span>
                             </div>
 
                             {{-- コメントの本文 --}}
-                            <div class="bg-gray-100 p-4 rounded-md text-sm">
+                            <div class="bg-gray-200 p-4 rounded text-sm">
                                 {{ $comment->comment }}
                             </div>
                         </div>
@@ -133,12 +133,12 @@
 
                 {{-- コメント投稿フォーム：ログイン前でも表示 --}}
                 <div>
-                    <h3 class="font-bold mb-2 text-sm">商品へのコメント</h3>
+                    <h3 class="font-bold mb-2 text-lg">商品へのコメント</h3>
                     <form action="{{ route('comment.store', ['product_id' => $product->id]) }}" method="POST">
                         @csrf
-                        <textarea name="comment" rows="6" class="w-full border border-gray-300 rounded-md p-3 mb-4"></textarea>
+                        <textarea name="comment" rows="6" class="w-full border-[1.5px] border-gray-400 rounded p-3 mb-8 focus:outline-none focus:border-gray-400"></textarea>
                         <button type="submit"
-                            class="w-full bg-red-500 text-white font-bold py-3 rounded-md hover:bg-red-600 transition">
+                            class="w-full text-lg bg-red-400 text-white font-bold py-3 rounded hover:bg-red-600 transition">
                             @auth
                                 コメントを送信する
                             @else

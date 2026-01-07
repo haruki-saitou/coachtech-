@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    @error ('success')
-        <div class="alert alert-success" id="flash-success-message">
-            {{ session('success') }}
+    @if (session('status'))
+        <div id="flash-message"
+            class="max-w-[1400px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
+            {{ session('status') }}
         </div>
-    @enderror
+    @endif
     @if ($is_empty ?? false)
         <div class="alert alert-danger" id="flash-error-message">
             「{{ $keyword }}」に一致する商品が見つかりませんでした。
         </div>
     @endif
-    <div class="border-b-2 border-gray-300 mt-8">
-        <div class="max-w-7xl mx-auto px-4 flex gap-10 pb-2 pt-4">
+    <div class="flex border-b-2 border-gray-300 w-full mt-8">
+        <div class="max-w-[1400px] mx-auto px-26 flex gap-10 pb-2 pt-4">
             <a href="{{ route('product.index', ['keyword' => $keyword ?? '']) }}"
                 class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') !== 'mylist' ? 'text-red-500' : 'text-gray-500' }}">
                 おすすめ
@@ -25,12 +26,12 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-10">
-        <div class="grid grid-cols-4 gap-x-8 gap-y-12">
+    <div class="max-w-[1400px] mx-auto px-12 py-14">
+        <div class="grid grid-cols-4 gap-x-12 gap-y-12">
             @foreach ($products as $product)
-                <a href="{{ route('product.show', $product->id) }}" class="flex flex-col items-start group">
+                <a href="{{ route('product.show', $product->id) }}" class="flex flex-col items-start group transition-all duration-300 hover:shadow-lg p-2 rounded">
                     <div
-                        class="relative w-full aspect-square bg-gray-300 rounded-sm mb-3 overflow-hidden flex items-center justify-center">
+                        class="relative w-full aspect-square bg-gray-300 rounded mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
                         @if ($product->image_path)
                             <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}"
@@ -44,7 +45,7 @@
                             </div>
                         @endif
                     </div>
-                    <p class="text-base font-medium text-gray-800 text-left group-hover:text-red-500 transition">
+                    <p class="text-base font-medium text-gray-800 text-left transition">
                         {{ $product->name }}</p>
                 </a>
             @endforeach
