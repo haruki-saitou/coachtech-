@@ -144,6 +144,12 @@ CSS/JavaScriptをビルド
 ```bash
   ./vendor/bin/sail artisan migrate:fresh --seed
 ```
+Stripeの設定  
+Stripeのテスト用APIキーを.envに設定してください。  
+```bash
+STRIPE_KEY=ここにコピーして貼り付けてください
+STRIPE_SECRET=ここにコピーして貼り付けてください。
+```
   
 ## 開発環境　  
 - 会員登録画面: http://localhost/register  
@@ -159,7 +165,8 @@ CSS/JavaScriptをビルド
 ## 使用技術（実行環境）  
 - php 8.5.0  
 - laravel 12.43.1  
-- Node.js: v24.11.1  
+- Node.js: v24.11.1
+- Stripe API (決済機能)  
 - JavaScript (jQuery 3.x.x)  
 - MySQL 8.4.7  
 - Web Server: Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
