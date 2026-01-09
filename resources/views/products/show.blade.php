@@ -14,7 +14,7 @@
                             alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover">
                     @endif
                     @if ($product->is_sold)
-                        <div class="absolute inset-0 bg-black/80 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                             <span class="text-white text-4xl font-black tracking-widest uppercase">
                                 Sold
                             </span>
@@ -29,14 +29,14 @@
                 <p class="text-md text-gray-500 mb-4">{{ $product->brand_name ?? 'ブランド名' }}</p>
 
                 <div class="mb-4">
-                    <span class="text-3xl text-gray-900">¥{{ number_format($product->price) }}</span>
+                    <span class="text-3xl text-gray-900">¥ {{ number_format($product->price) }}</span>
                     <span class="text-xl text-gray-700 ml-1">(税込)</span>
                 </div>
 
                 <div class="flex items-center gap-6 mb-6">
                     {{-- いいね：ログイン前でも表示 --}}
                     <div class="flex flex-col items-center">
-                        <form action="{{ route('like.toggle', ['product_id' => $product->id]) }}" method="POST">
+                        <form action="{{ route('like.toggle', ['item_id' => $product->id]) }}" method="POST">
                             @csrf
                             <button type="submit" class="hover:opacity-80 transition">
                                 @if (Auth::check() && $product->likes()->where('user_id', Auth::id())->exists())
@@ -68,7 +68,7 @@
                             売り切れました
                         </button>
                     @else
-                        <a href="{{ route('purchase.show', ['purchase_id' => $product->id]) }}"
+                        <a href="{{ route('purchase.show', ['item_id' => $product->id]) }}"
                             class="block w-full text-center bg-red-400 text-white font-bold py-3 rounded hover:bg-red-600 transition">
                             購入手続きへ
                         </a>
@@ -134,16 +134,18 @@
                 {{-- コメント投稿フォーム：ログイン前でも表示 --}}
                 <div>
                     <h3 class="font-bold mb-2 text-lg">商品へのコメント</h3>
-                    <form action="{{ route('comment.store', ['product_id' => $product->id]) }}" method="POST">
+                    <form action="{{ route('comment.store', ['item_id' => $product->id]) }}" method="POST">
                         @csrf
-                        <textarea name="comment" rows="6" class="w-full border-[1.5px] border-gray-400 rounded p-3 mb-8 focus:outline-none focus:border-gray-400"></textarea>
+                        <div class="mb-8">
+                            <textarea name="comment" rows="6"
+                                class="w-full border-[1.5px] border-gray-400 rounded p-3 mb-2 focus:outline-none focus:border-gray-400"></textarea>
+                            @error('comment')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                         <button type="submit"
                             class="w-full text-lg bg-red-400 text-white font-bold py-3 rounded hover:bg-red-600 transition">
-                            @auth
-                                コメントを送信する
-                            @else
-                                ログインしてコメントする
-                            @endauth
+                            コメントを送信する
                         </button>
                     </form>
                 </div>

@@ -8,21 +8,20 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
-Route::get('/products/{product_id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('product.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     //購入関連
-    Route::get('/purchases/{purchase_id}', [PurchaseController::class, 'show'])->name('purchase.show');
-    Route::get('/purchases/address/{purchase_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
-    //商品出品関連
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
+    Route::patch('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('purchase.update');
+    Route::post('/purchase/checkout/{item_id}', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
+    Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'success'])->name('purchase.success');
     Route::get('/sell', [ProductController::class, 'create'])->name('product.create');
     Route::post('/sell', [ProductController::class, 'store'])->name('product.store');
-    //プロフィール関連
     Route::get('/mypage', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
-    //いいね機能
-    Route::post('/products/{product_id}/like', [LikeController::class, 'toggle'])->name('like.toggle');
-    //コメント機能
-    Route::post('/products/{product_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::post('/item/{item_id}/like', [LikeController::class, 'toggle'])->name('like.toggle');
+    Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comment.store');
 });

@@ -7,25 +7,27 @@
             <h2 class="text-3xl font-bold mb-12 text-center">商品の出品</h2>
 
             <!-- 商品画像 -->
-            <div class="mb-12">
+            <div class="mb-10">
                 <label class="block font-bold mb-2 text-xl">商品画像</label>
                 <div
                     class="relative w-full h-42 border-2 border-dashed border-gray-300 rounded flex item-center justify-center overflow-hidden">
                     <img id="product-preview" class="hidden absolute inset-0 w-full h-full object-cover z-10 cursor-pointer"
-                        onclick="document.getElementById('image_path').click()">
+                        onclick="document.getElementById('product-image_path').click()">
                     <div id="upload-prompt" class="flex flex-col items-center justify-center w-full h-full">
-                        <label for="image_path"
+                        <label for="product-image_path"
                             class="w-[180px] m-auto cursor-pointer border-2 border-red-500 text-red-500 py-2 rounded-lg font-bold hover:bg-red-50 transition text-center">画像を選択する
                         </label>
                         <input type="file" name="image_path" id="product-image_path" class="hidden" accept="image/*">
                     </div>
                 </div>
-                @error('image_path')
-                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                @enderror
+                <div class="inline-block">
+                    @error('image_path')
+                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
             <div class="mb-12">
-                <h3 class="text-2xl text-gray-500 font-bold border-b-[1.5px] border-gray-500 mb-8 pb-2">商品の詳細</h3>
+                <h3 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-500 mb-8 pb-2">商品の詳細</h3>
                 <div class="mb-10">
                     <label class="block text-xl font-bold mb-6">カテゴリー</label>
                     <div class="flex flex-wrap gap-x-4 gap-y-6">
@@ -37,11 +39,13 @@
                             </label>
                         @endforeach
                     </div>
-                    @error('categories')
-                        <p class="text-red-500 text-sm mt-4">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('categories')
+                            <p class="text-red-500 text-sm mt-4">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
-                <div class="mb-12">
+                <div class="mb-10">
                     <label class="block text-xl font-bold mb-4">商品の状態</label>
                     <div class="relative">
                         <select name="condition_id" id="condition_id"
@@ -57,40 +61,48 @@
                             <span class="text-lg">▼</span>
                         </div>
                     </div>
-                    @error('condition_id')
-                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('condition_id')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
             <!-- 商品名 -->
-            <div class="mb-12">
+            <div class="mb-14">
                 <h3 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-400 mb-8 pb-2">商品名と説明</h3>
-                <div class="mb-8">
-                    <label for="name" class="block text-xl font-bold mb-1">商品名</label>
+                <div class="mb-2">
+                    <label for="name" class="block text-xl font-bold mb-2">商品名</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}"
                         class="w-full border-[1.5px] border-gray-400 p-2 rounded focus:outline-none focus:border-gray-700">
-                    @error('name')
-                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('name')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
-                <div class="mb-8">
+                <div class="mb-2">
                     <label for="name" class="block text-xl font-bold mb-1">ブランド名</label>
                     <input type="text" name="brand_name" id="brand_name" value="{{ old('brand_name') }}"
                         class="w-full border-[1.5px] border-gray-400 p-2 rounded focus:outline-none focus:border-gray-700">
-                    @error('brand_name')
-                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('brand_name')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
-                <div class="mb-8">
+                <div class="mb-2">
                     <label for="description" class="block text-xl font-bold mb-1">商品の説明</label>
                     <textarea name="description" id="description" rows="4"
                         class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700 resize-none">{{ old('description') }}</textarea>
-                    @error('description')
-                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('description')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
-                <div class="mb-18">
+                <div class="mb-2">
                     <label for="price" class="block text-xl font-bold mb-1">販売価格</label>
                     <div class="relative">
                         <input type="number" name="price" id="price" value="{{ old('price') }}"
@@ -100,9 +112,11 @@
                             <span class="font-bold text-md transform scale-y-[1.3] inline-block">¥</span>
                         </div>
                     </div>
-                    @error('price')
-                        <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                    @enderror
+                    <div class="inline-block">
+                        @error('price')
+                            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <button type="submit"
@@ -123,7 +137,6 @@
     <script>
         const imageInput = document.getElementById('product-image_path');
         const previewImage = document.getElementById('product-preview');
-        const fileNameDisplay = document.getElementById('file-name');
 
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];

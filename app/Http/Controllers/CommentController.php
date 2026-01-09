@@ -8,11 +8,11 @@ use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
-    public function store(CommentRequest $request, $product_id)
+    public function store(CommentRequest $request, $item_id)
     {
         Comment::create([
             'user_id' => Auth::id(),
-            'product_id' => $product_id,
+            'product_id' => $item_id,
             'comment' => $request->comment,
         ]);
 

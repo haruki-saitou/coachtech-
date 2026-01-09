@@ -17,7 +17,7 @@ class OrderSeeder extends Seeder
         Order::create([
             'user_id' => 5,
             'product_id' => 3,
-            'payment_method' => 'クレジットカード',
+            'payment_method' => 'card',
         ]);
 
         $products = Product::find(3);
@@ -26,7 +26,7 @@ class OrderSeeder extends Seeder
         Order::create([
             'user_id' => 6,
             'product_id' => 5,
-            'payment_method' => 'コンビニ払い',
+            'payment_method' => 'konbini',
         ]);
         $products = Product::find(5);
         $products->update(['is_sold' => true]);

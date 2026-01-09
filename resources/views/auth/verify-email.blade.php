@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-col items-center justify-center min-h-[60vh] px-4">
+    <div class="flex flex-col items-center justify-center min-h-[80vh] px-4">
         <div class="text-center mb-10">
             <h2 class="text-2xl font-bold leading-relaxed text-gray-800">
                 登録していただいたメールアドレスに認証メールを送信しました。<br>

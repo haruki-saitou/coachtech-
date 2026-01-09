@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex flex-col items-center justify-center py-20 px-4">
         <h2 class="text-2xl font-bold mb-10">ログイン</h2>
-        <form method="POST" action="{{ route('login') }}" class="w-full max-w-[680px]" novalidate>
+        <form method="POST" action="{{ route('login') }}" class="w-full max-w-[600px]" novalidate>
             @csrf
             <div class="mb-6">
                 <label for="email" class="block text-lg font-bold mb-2">メールアドレス</label>

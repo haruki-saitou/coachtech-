@@ -39,9 +39,9 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'keyword', 'tab', 'is_empty'));
     }
 
-    public function show($product_id)
+    public function show($item_id)
     {
-        $product = Product::findOrFail($product_id);
+        $product = Product::findOrFail($item_id);
         return view('products.show', compact('product'));
     }
     public function create()
