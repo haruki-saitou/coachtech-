@@ -35,9 +35,10 @@ class ProfileRequest extends FormRequest
         return [
             'image_path.mimes' => 'jpeg,png形式の画像を選択してください',
             'image_path.max' => '画像は2MB以内で選択してください',
-            'name.required' => '名前を入力してください',
-            'name.string' => '名前は文字で入力してください',
-            'name.max' => '名前は20文字以内で入力してください',
+            'name.required' => 'お名前を入力してください',
+            'name.string' => 'お名前は文字で入力してください',
+            'name.max' => 'お名前は20文字以内で入力してください',
+            'post_code.string' => '郵便番号は文字で入力してください',
             'post_code.size' => '郵便番号はハイフンを含めた8文字で入力してください',
             'post_code.regex' => '郵便番号は000-0000の形式で入力してください',
             'address.string' => '住所は文字で入力してください',

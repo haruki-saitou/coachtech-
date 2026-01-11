@@ -51,33 +51,39 @@ class PurchaseController extends Controller
 
         $session = Session::create([
             'payment_method_types' => [$request->payment_method === 'card' ? 'card' : 'konbini'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'jpy',
-                    'product_data' => [
-                        'name' => $product->name,
-                    ],
-                    'unit_amount' => $product->price,
-                ],
-                'quantity' => 1,
-            ]],
+            'metadata' => [
+                'product_id' => $product->id,
+                'user_id' => Auth::user()->id,
+                'payment_method' => $request->payment_method
+            ],
             'mode' => 'payment',
-            'success_url' => route('purchase.success', ['item_id' => $product->id]),
+            'success_url' => route('purchase.success', ['item_id' => $product->id]) . '?method=' . $request->payment_method,
             'cancel_url' => route('purchase.show', ['item_id' => $product->id, 'status' => 'cancel']),
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'jpy',
+                        'product_data' => [
+                            'name' => $product->name,
+                        ],
+                        'unit_amount' => $product->price,
+                    ],
+                    'quantity' => 1,
+                ]
+            ],
         ]);
 
         return redirect()->away($session->url);
     }
 
-    public function success($item_id) {
-        $user = Auth::user();
-        $product = Product::findOrFail($item_id);
-        Order::create([
-            'user_id' => $user->id,
-            'product_id' => $product->id,
-            'payment_method' => 'stripe',
-        ]);
-        $product->update(['is_sold' => true]);
-        return redirect()->route('product.index')->with('status', '商品を購入しました');
+    public function success(Request $request, $item_id) {
+        $method = $request->query('method');
+
+        if ($method === 'konbini') {
+            $message = 'ご購入ありがとうございます。コンビニ決済完了後に購入確定となります。';
+        } else {
+            $message = '商品を購入しました。';
+        }
+        return redirect()->route('product.index')->with('status', $message);
     }
 }

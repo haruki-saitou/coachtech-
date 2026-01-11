@@ -14,4 +14,9 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+
+    public function logout()
+    {
+        return redirect()->route('product.index')->with('status', 'ログアウトしました');
+    }
 }

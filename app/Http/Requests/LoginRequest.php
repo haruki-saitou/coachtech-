@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email.required' => 'メールアドレスを入力してください',
-            'email.email' => 'メールアドレスの形式で入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
             'email.string' => 'メールアドレスは文字で入力してください',
             'email.max' => 'メールアドレスは255文字以内で入力してください',
             'password.required' => 'パスワードを入力してください',

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col items-center justify-center py-20 px-4">
-        <h2 class="text-3xl font-bold mb-16">会員登録</h2>
+        <h1 class="text-3xl font-bold mb-16">会員登録</h1>
         <form method="POST" action="{{ route('register') }}" class="w-full max-w-[600px]" novalidate>
             @csrf
             <div class="mb-8">
@@ -34,7 +34,7 @@
             <div class="mb-8">
                 <label for="password_confirmation" class="block text-lg font-bold mb-2">パスワード確認</label>
                 <input type="password" name="password_confirmation" id="password_confirmation"
-                    class="w-full border-[1.5px] border-gray-400 mb-6 p-3 rounded focus:outline-none focus:border-gray-700" required>
+                    class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700" required>
                 @error('password_confirmation')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror

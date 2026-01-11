@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -71,6 +72,14 @@ class FortifyServiceProvider extends ServiceProvider
                 \Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
             ];
 
+        });
+
+        $this->app->instance(\Laravel\Fortify\Contracts\LogoutResponse::class, new class implements \Laravel\Fortify\Contracts\LogoutResponse {
+
+            public function toResponse($request)
+            {
+                return redirect('/')->with('status', 'ログアウトしました');
+            }
         });
     }
 }

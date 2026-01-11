@@ -32,6 +32,7 @@ class UpdateAddressRequest extends FormRequest
     {
         return [
             'post_code.required' => '郵便番号を入力してください',
+            'post_code.string' => '郵便番号は文字で入力してください',
             'post_code.size' => '郵便番号はハイフンを含めた8文字で入力してください',
             'post_code.regex' => '郵便番号は000-0000の形式で入力してください',
             'address.required' => '住所を入力してください',

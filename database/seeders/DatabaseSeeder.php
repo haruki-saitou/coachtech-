@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use COM;
-use Dom\Comment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,7 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        User::factory()->create([
+        'name' => 'テストユーザー',
+        'email' => 'test@example.com',
+        'password' => bcrypt('password'), // パスワードを「password」に設定
+    ]);
+        User::factory(9)->create();
 
         $this->call([
             CategorySeeder::class,

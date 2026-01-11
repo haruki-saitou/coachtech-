@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1 class="sr-only">商品一覧</h1>
     @if (session('status'))
         <div id="flash-message"
             class="max-w-[1400px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
@@ -20,7 +21,6 @@
                 class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') !== 'mylist' ? 'text-red-500' : 'text-gray-500' }}">
                 おすすめ
             </a>
-
             <a href="{{ route('product.index', array_merge(request()->query(), ['tab' => 'mylist'])) }}"
                 class="ml-12 text-lg font-bold cursor-pointer {{ request()->query('tab') === 'mylist' ? 'text-red-500' : 'text-gray-500 hover:text-black transition' }}">
                 マイリスト
@@ -32,7 +32,6 @@
             お気に入りに登録した商品はまだありません。
         @endif
     </div>
-
     <div class="max-w-[1400px] mx-auto px-8 py-4">
         <div class="grid grid-cols-4 gap-x-8 gap-y-8">
             @foreach ($products as $product)

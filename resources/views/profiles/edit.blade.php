@@ -8,17 +8,16 @@
         </div>
     @endif
     <div class="max-w-[1400px] mx-auto flex flex-col items-center justify-center py-12 px-4">
-        <h2 class="text-2xl font-bold mb-10 text-center">プロフィール設定</h2>
-        {{-- enctype="multipart/form-data" を忘れずに追加します --}}
+        <h1 class="text-2xl font-bold mb-10 text-center">プロフィール設定</h1>
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="w-full max-w-[600px]"
             novalidate>
             @csrf
-            @method('PATCH') {{-- 更新であることをパソコンに伝えます --}}
+            @method('PATCH')
             <div class="flex items-center mb-14">
                 {{-- プロフィール画像アップロードエリア --}}
                 <label class="flex items-center space-x-8 cursor-pointer">
                     <div class="w-30 h-30 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-                        {{-- 登録済み画像があれば表示、なければグレーの円 --}}
+                        {{-- 画像があれば表示、なければグレーの円 --}}
                         @if ($user->image_path)
                             <img id="profile-preview" src="{{ asset('storage/' . $user->image_path) }}"
                                 class="w-full h-full object-cover">
@@ -43,7 +42,6 @@
             <div class="mb-6">
                 <div>
                     <label for="name" class="block text-lg font-bold mb-2 text-left w-full">ユーザー名</label>
-                    {{-- valueには $user->name を入れて、最初から自分の名前が出るようにします --}}
                     <input type="text" name="name" id="name"
                         class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700"
                         value="{{ old('name', $user->name) }}">

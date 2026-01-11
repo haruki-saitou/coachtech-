@@ -11,7 +11,7 @@
         <form method="POST" action="{{ route('purchase.checkout', ['item_id' => $product->id]) }}"
             class="flex w-full justify-between items-center flex-col md:flex-row gap-12 px-4 md:items-start" novalidate>
             @csrf
-            {{-- 左側：画像エリア --}}
+            {{-- 左側 --}}
             <div class="w-full md:flex-1 px-6">
                 <div class="flex border-b-[1.5px] border-gray-400 gap-14 pb-12 mb-20]">
                     <div class="w-50 h-50 bg-gray-300 flex-shrink-0 flex items-center justify-center relative rounded-sm">
@@ -68,7 +68,6 @@
                     </div>
                 </div>
             </div>
-
             {{-- 右側：詳細情報エリア --}}
             <div class="w-full md:w-[450px] flex flex-col mx-2 gap-8 gap-y-16 px-4 pt-10]">
                 <div class="border-[1.5px] border-gray-500 rounded-sm">
@@ -96,7 +95,6 @@
     <script>
         const methodSelect = document.getElementById('payment_method_select');
         const displayMethod = document.getElementById('display_payment_method');
-
 
         function updateDisplay() {
             const selectedText = methodSelect.options[methodSelect.selectedIndex].text;

@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<h1 class="sr-only">プロフィール</h1>
     <div class="flex flex-col md:flex-row items-center justify-around my-14 max-w-[1400px] mx-auto px-24 gap-4">
         {{-- プロフィール画像アップロードエリア --}}
         <div class="flex items-center space-x-8">
             <div class="w-30 h-30 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-                {{-- 登録済み画像があれば表示、なければグレーの円 --}}
+                {{-- 画像があれば表示、なければグレーの円 --}}
                 @if ($user->image_path)
                     <img src="{{ asset('storage/' . $user->image_path) }}" class="w-full h-full object-cover">
                 @else
@@ -19,15 +20,12 @@
                 class="border-[1.5px] border-red-400 text-red-400 px-6 py-2 rounded-md text-base font-bold hover:bg-red-50 transition">プロフィールを編集</a>
         </div>
     </div>
-
-
     <div class="border-b-[1.5px] border-gray-400 w-full">
         <div class="text-lg font-bold max-w-[1400px] mx-auto px-28 flex gap-14 pb-2 pt-4">
             <a href="{{ route('profile.index', ['page' => 'sell']) }}"
                 class="... {{ request()->query('page') !== 'buy' ? 'text-red-500' : 'text-gray-500' }}">
                 出品した商品
             </a>
-
             <a href="{{ route('profile.index', ['page' => 'buy']) }}"
                 class="... {{ request()->query('page') === 'buy' ? 'text-red-500' : 'text-gray-500' }}">
                 購入した商品
@@ -45,7 +43,6 @@
             </p>
         @endif
     </div>
-
     <div class="max-w-[1400px] mx-auto px-6 py-6">
         <div class="grid grid-cols-4 gap-x-12 gap-y-12">
             @foreach ($products as $product)

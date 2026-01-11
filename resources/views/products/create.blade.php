@@ -4,9 +4,7 @@
     <div class="flex py-10 max-w-[1400px] mx-auto px-4">
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" class="max-w-2xl mx-auto p-6">
             @csrf
-            <h2 class="text-3xl font-bold mb-12 text-center">商品の出品</h2>
-
-            <!-- 商品画像 -->
+            <h1 class="text-3xl font-bold mb-12 text-center">商品の出品</h1>
             <div class="mb-10">
                 <label class="block font-bold mb-2 text-xl">商品画像</label>
                 <div
@@ -27,7 +25,7 @@
                 </div>
             </div>
             <div class="mb-12">
-                <h3 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-500 mb-8 pb-2">商品の詳細</h3>
+                <h2 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-500 mb-8 pb-2">商品の詳細</h2>
                 <div class="mb-10">
                     <label class="block text-xl font-bold mb-6">カテゴリー</label>
                     <div class="flex flex-wrap gap-x-4 gap-y-6">
@@ -68,10 +66,8 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 商品名 -->
             <div class="mb-14">
-                <h3 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-400 mb-8 pb-2">商品名と説明</h3>
+                <h2 class="text-3xl text-gray-500 font-bold border-b-[1.5px] border-gray-400 mb-8 pb-2">商品名と説明</h2>
                 <div class="mb-2">
                     <label for="name" class="block text-xl font-bold mb-2">商品名</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}"

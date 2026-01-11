@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col items-center justify-center py-10 px-4">
-        <h2 class="text-3xl font-bold mb-20">住所変更</h2>
+        <h1 class="text-3xl font-bold mb-20">住所変更</h1>
         <form method="POST" action="{{ route('purchase.update', ['item_id' => $item_id]) }}" class="w-full max-w-[600px]"
             novalidate>
             @csrf
@@ -20,7 +20,6 @@
                     @enderror
                 </div>
             </div>
-
             {{-- 住所 --}}
             <div class="mb-2">
                 <label for="address" class="block text-lg font-bold mb-2 text-left w-full">住所</label>
@@ -33,7 +32,6 @@
                     @enderror
                 </div>
             </div>
-
             {{-- 建物名 --}}
             <div class="mb-6">
                 <label for="building" class="block text-lg font-bold mb-2 text-left w-full">建物名</label>
@@ -46,7 +44,6 @@
                     @enderror
                 </div>
             </div>
-
             <button type="submit"
                 class="w-full bg-red-400 text-white text-lg font-bold py-3 rounded mt-6 hover:bg-red-600 transition duration-200">
                 更新する

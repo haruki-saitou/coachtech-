@@ -3,10 +3,10 @@
 @section('content')
     <div class="flex flex-col items-center justify-center min-h-[80vh] px-4">
         <div class="text-center mb-10">
-            <h2 class="text-2xl font-bold leading-relaxed text-gray-800">
+            <h1 class="text-2xl font-bold leading-relaxed text-gray-800">
                 登録していただいたメールアドレスに認証メールを送信しました。<br>
                 メール認証を完了してください。
-            </h2>
+            </h1>
         </div>
         <div class="flex justify-center">
             <a href="https://mailtrap.io/inboxes" target="_blank"

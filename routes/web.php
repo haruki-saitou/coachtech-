@@ -6,9 +6,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\StripeWebhookController;
 
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
 Route::get('/item/{item_id}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     //購入関連
