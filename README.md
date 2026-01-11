@@ -196,9 +196,17 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 ```
   
 ## 開発環境　  
-- 会員登録画面: http://localhost/register  
-- ログイン画面: http://localhost/login  
-- 商品一覧画面: http://localhost/  
+MacBook Air M4を使用しています。  
+- 会員登録画面: http://localhost/register
+- ログイン画面: http://localhost/login
+- メール認証誘導画面: http://localhost/email/verify
+- 商品一覧画面（トップ画面）: http://localhost/
+- 商品詳細画面: http://localhost/item/{item_id}
+- 商品出品画面: http://localhost/sell
+- 商品購入画面: http://localhost/purchase/{item_id}
+- 送付先住所変更画面: http://localhost/purchase/address/{item_id}?payment_method=
+- プロフィール画面: http://localhost/mypage
+- プロフィール編集画面（設定画面）: http://localhost/mypage/profile
 - phpMyAdmin: http://localhost:8080/
   
 ### テスト用ログイン情報  
@@ -229,7 +237,7 @@ password
 ## 動作確認フロー
 1. `http://localhost/register` で新規会員登録を行う。
 2. `Mailtrap` に届く認証メール内のリンクをクリックする。
-3. プロフィール設定で「画像」、「郵便番号」、「住所」、「建物名」を登録する。
+3. 自動でプロフィール設定画面へ移動することを確認後、「画像」、「郵便番号」、「住所」、「建物名」を登録する。
 4. 商品を出品し、画像が表示されるか確認する。
 5. Stripeのテスト
 カード番号 : 4242 4242 4242 4242  
