@@ -38,11 +38,11 @@
                 <a href="{{ route('product.show', $product->id) }}"
                     class="flex flex-col items-start group transition-all duration-300 hover:shadow-lg p-2 rounded">
                     <div
-                        class="relative w-full aspect-square bg-gray-300 rounded mb-3 overflow-hidden flex items-center justify-center">
+                        class="relative w-full aspect-square bg-gray-200 animate-pulse rounded mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
                         @if ($product->image_path)
-                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset($product->image_path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover">
+                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/products/' . $product->image_path) }}"
+                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover" onload="this.parentElement.classList.remove('animate-pulse')">
                         @endif
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">

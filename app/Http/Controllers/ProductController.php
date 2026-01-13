@@ -34,7 +34,7 @@ class ProductController extends Controller
                 $query->where('user_id', '!=', Auth::id());
             }
         }
-        $products = $query->get();
+        $products = $query->latest()->take(30)->get();
         $is_empty = $products->isEmpty();
         return view('products.index', compact('products', 'keyword', 'tab', 'is_empty'));
     }
