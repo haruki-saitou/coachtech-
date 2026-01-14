@@ -34,7 +34,7 @@ class ProductController extends Controller
                 $query->where('user_id', '!=', Auth::id());
             }
         }
-        $products = $query->latest()->take(30)->get();
+        $products = $query->latest()->paginate(20);
         $is_empty = $products->isEmpty();
         return view('products.index', compact('products', 'keyword', 'tab', 'is_empty'));
     }
@@ -54,7 +54,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        $data['image_path'] = $request->file('image_path')->store('images', 'public');
+        $data['image_path'] = $request->file('image_path')->store( '', 'public');
         $data['user_id'] = Auth::id();
         $product = Product::create($data);
         $product->categories()->sync($request->categories);

@@ -23,11 +23,12 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
+            'brand_name' => ['nullable', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:1000'],
             'image_path' => ['required', 'image', 'mimes:jpeg,png', 'max:2048'],
-            'categories' => ['required', 'array'],
-            'condition_id' => ['required'],
-            'price' => ['required', 'integer', 'min:0'],
+            'categories' => ['required', 'array', 'min:1'],
+            'condition_id' => ['required', 'exists:conditions,id'],
+            'price' => ['required', 'integer', 'min:0', 'max:9999999'],
         ];
     }
 
@@ -36,18 +37,23 @@ class ProductRequest extends FormRequest
             'name.required' => '商品名を入力してください',
             'name.string' => '商品名は文字列で入力してください',
             'name.max' => '商品名は255文字以内で入力してください',
+            'brand_name.string' => 'ブランド名は文字列で入力してください',
+            'brand_name.max' => 'ブランド名は255文字以内で入力してください',
             'description.required' => '商品説明を入力してください',
             'description.string' => '商品説明は文字列で入力してください',
-            'description.max' => '商品説明は255文字以内で入力してください',
+            'description.max' => '商品説明は1000文字以内で入力してください',
             'image_path.required' => '商品画像を選択してください',
             'image_path.image' => '商品画像は画像形式で選択してください',
             'image_path.mimes' => '商品画像はjpeg,png形式の画像を選択してください',
             'image_path.max' => '商品画像は2MB以内の画像を選択してください',
             'categories.required' => '商品カテゴリーを選択してください',
+            'categories.min' => '商品カテゴリーは1つ以上選択してください',
             'condition_id.required' => '商品状態を選択してください',
+            'condition_id.exists' => '正しい商品状態を選択してください',
             'price.required' => '商品価格を入力してください',
             'price.integer' => '商品価格は整数で入力してください',
             'price.min' => '商品価格は0円以上で入力してください',
+            'price.max' => '商品価格は9999999円以下で入力してください',
         ];
     }
 }

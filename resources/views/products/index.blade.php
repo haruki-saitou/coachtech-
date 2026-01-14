@@ -32,7 +32,7 @@
             お気に入りに登録した商品はまだありません。
         @endif
     </div>
-    <div class="max-w-[1400px] mx-auto px-8 py-4">
+    <div id="product-list"class="max-w-[1400px] mx-auto px-8 py-4">
         <div class="grid grid-cols-4 gap-x-8 gap-y-8">
             @foreach ($products as $product)
                 <a href="{{ route('product.show', $product->id) }}"
@@ -41,12 +41,14 @@
                         class="relative w-full aspect-square bg-gray-200 animate-pulse rounded mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
                         @if ($product->image_path)
-                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/products/' . $product->image_path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover" onload="this.parentElement.classList.remove('animate-pulse')">
+                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/' . $product->image_path) }}"
+                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover"
+                                onload="this.parentElement.classList.remove('animate-pulse')">
                         @endif
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                                <span class="text-white text-5xl font-black tracking-widest uppercase transform rotate-[-45deg]">
+                                <span
+                                    class="text-white text-5xl font-black tracking-widest uppercase transform rotate-[-45deg]">
                                     Sold
                                 </span>
                             </div>
@@ -57,5 +59,51 @@
                 </a>
             @endforeach
         </div>
+        <div id="pagination-wrapper" class="hidden">{{ $products->links() }}</div>
     </div>
+    <div id="loading-spinner" class="text-center py-10 hidden">
+        <div class="inline-block animate-spin h-8 w-8 border-4 border-gray-900 rounded-full border-t-transparent"></div>
+        <p class="text-lg text-gray-700">Loading...</p>
+    </div>
+@endsection
+@section('js')
+    <script>
+        document.addEventListener('scroll', function() {
+            const wrapper = document.getElementById('pagination-wrapper');
+            if (!wrapper) return;
+            const nextNavLink = wrapper.querySelector('a[rel="next"]');
+            if (!nextNavLink) return;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const scrollPosition = window.innerHeight + window.pageYOffset;
+            if ((scrollHeight - scrollPosition) / scrollHeight < 0.05) {
+                loadMoreProducts(nextNavLink.href);
+            }
+        });
+
+        let isFetching = false;
+
+        function loadMoreProducts(url) {
+            if (isFetching) return;
+            isFetching = true;
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newProducts = doc.querySelectorAll('#product-list .grid > a');
+                    const grid = document.querySelector('#product-list .grid');
+                    newProducts.forEach(item => grid.appendChild(item));
+                    const newPagination = doc.getElementById('pagination-wrapper');
+                    if (newPagination && newPagination.innerHTML.trim() !== "") {
+                        document.getElementById('pagination-wrapper').innerHTML = newPagination.innerHTML;
+                    }else{
+                        document.getElementById('pagination-wrapper').remove();
+                    }
+                    isFetching = false;
+                    document.getElementById('loading-spinner').classList.add('hidden');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 @endsection
