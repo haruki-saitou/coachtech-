@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 class AuthController extends Controller
 {
     public function login()
@@ -13,10 +12,5 @@ class AuthController extends Controller
     public function register()
     {
         return view('auth.register');
-    }
-
-    public function logout()
-    {
-        return redirect()->route('product.index')->with('status', 'ログアウトしました');
     }
 }
