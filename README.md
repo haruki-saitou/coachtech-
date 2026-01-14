@@ -2,7 +2,17 @@
 
   
 ## テーブル設計  
-※全体設計として、ER図に基づき「1対多」または「多対多」のリレーションを構成しています。
+※全体設計として、ER図に基づきリレーションを構成しています。
+- Users(1) : Products(0または多)
+- Users(1) : Comments(0または多)
+- Users(1) : Likes(0または多)
+- Products(1) : Orders(0または1)
+- Products(多) : Conditions(1)
+- Products(1) : Comments(0または多)
+- Products(1) : Likes(0または多)
+- Products(1) : category_product(1または多)
+- category_product(多) : Categories(1)
+  
 | Usersテーブル          |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
@@ -14,13 +24,13 @@
 | post_code          | varchar(255)     |             |            | ◯        |                |
 | address            | varchar(255)     |             |            | ◯        |                |
 | building           | varchar(255)     |             |            |          |                |
-| created_at         | timestamp        |             |            |          |                |
-| updated_at         | timestamp        |             |            |          |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
 | Productsテーブル       |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | name               | varchar(255)     |             |            | ◯        |                |
@@ -30,8 +40,8 @@
 | image_path         | varchar(255)     |             |            | ◯        |                |
 | condition_id       | unsigned bigint  |             |            | ◯        | conditions(id) |
 | is_sold            | boolean          |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp       |             |            |◯         |                |
+| updated_at          | timestamp       |             |            |◯         |                |
 
 
 | Categoriesテーブル     |                  |             |            |          |                |
@@ -39,8 +49,8 @@
 | カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp       |             |            |◯         |                |
+| updated_at          | timestamp       |             |            |◯         |                |
 
 
 | Commentsテーブル |                  |             |            |          |                |
@@ -50,8 +60,8 @@
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
 | comment            | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp        |             |            |◯         |                |
+| updated_at          | timestamp        |             |            |◯         |                |
 
 
 | Conditionsテーブル     |                  |             |            |          |                |
@@ -59,8 +69,8 @@
 | カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp        |             |            |◯         |                |
+| updated_at          | timestamp        |             |            |◯         |                |
 
 
 | Ordersテーブル         |                  |             |            |          |                |
@@ -70,8 +80,8 @@
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
 | payment_method     | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp        |             |            |◯         |                |
+| updated_at          | timestamp        |             |            |◯         |                |
 
 
 | Likesテーブル     |                  |             |            |          |                |
@@ -80,8 +90,8 @@
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp        |             |            |◯         |                |
+| updated_at          | timestamp        |             |            |◯         |                |
 
 
 | category_productテーブル     |                  |             |            |          |                |
@@ -90,8 +100,8 @@
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | category_id        | unsigned bigint  |             |            | ◯        | categories(id)  |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
-| created_at          | timestamp        |             |            |          |                |
-| updated_at          | timestamp        |             |            |          |                |
+| created_at          | timestamp        |             |            |◯         |                |
+| updated_at          | timestamp        |             |            |◯         |                |
 
 
 ## 環境構築　　  
@@ -150,7 +160,7 @@ CSS/JavaScriptをビルド
 ### メール認証の設定について  
 開発環境でのメールテストには、Mailtrapを使用しています。  
   
-- [Mailtrap](https://mailtrap.io/)にログインし、SMTP設定の **Integrations** から 「Laravel 9+」 を選択します。
+- [Mailtrap](https://mailtrap.io/)にログインし、SMTP設定の Integrations から「Laravel 9+」を選択します。
 - 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。  
 `MAIL_HOST`  
 `MAIL_PORT`  
@@ -193,7 +203,8 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 設定を変更したので、`.env`を保存後に設定を反映させるため、ターミナルで以下のコマンドを打ってください。  
 ```bash
 ./vendor/bin/sail artisan config:clear
-```
+```  
+※キャッシュをクリアしたので、そのままブラウザで動作確認してください。
   
 ## 開発環境　  
 MacBook Air M4を使用しています。  
@@ -230,7 +241,7 @@ password
 - laravel 12.43.1  
 - Node.js: v24.11.1
 - Stripe API (決済機能)  
-- JavaScript (jQuery 3.x.x)  
+- JavaScript (Vanilla JS)※jQuesy不使用  
 - MySQL 8.4.7  
 - Web Server: Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
   
@@ -243,6 +254,10 @@ password
 カード番号 : 4242 4242 4242 4242  
 有効期限 : 未来の日付であれば問題ありません。
 cvc : 適当な番号で問題ありません。
+
+## 一覧表示仕様
+- 取得方式：JavaScript (fetch API) による無限スクロール
+- 読み込み単位：1ページ 20件 (paginate(20))
   
 ## ER図  
 ![ER図](images/er_diagram.png)
