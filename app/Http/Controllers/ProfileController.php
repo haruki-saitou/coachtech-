@@ -10,17 +10,20 @@ use App\Models\Product;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request, $user_id = null)
+    public function topProfile(Request $request, $user_id = null)
     {
         $user = Auth::user();
         $tab = $request->input('page');
         $query = Product::query();
 
+        // マイページ出品・購入した商品を表示
         if ($tab === 'buy'){
+            // 購入した商品
             $query->whereHas('orders', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
             });
         } else {
+            // 出品した商品
             $query->where('user_id', $user->id);
         }
         $products = $query->get();
@@ -29,13 +32,13 @@ class ProfileController extends Controller
         return view('profiles.index', compact('user', 'products', 'is_empty'));
     }
 
-    public function edit()
+    public function editProfile()
     {
         $user = Auth::user();
         return view('profiles.edit', compact('user'));
     }
 
-    public function update(ProfileRequest $request)
+    public function updateProfile(ProfileRequest $request)
     {
         $user = Auth::user();
 

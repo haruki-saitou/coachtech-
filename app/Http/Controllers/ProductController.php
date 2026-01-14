@@ -11,7 +11,7 @@ use App\Models\Condition;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function topProduct(Request $request)
     {
         $keyword = $request->query('keyword');
         $tab = $request->query('tab');
@@ -39,19 +39,19 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'keyword', 'tab', 'is_empty'));
     }
 
-    public function show($item_id)
+    public function showProduct($item_id)
     {
         $product = Product::findOrFail($item_id);
         return view('products.show', compact('product'));
     }
-    public function create()
+    public function createProduct()
     {
         $categories = Category::all();
         $conditions = Condition::all();
         return view('products.create', compact('categories', 'conditions'));
     }
 
-    public function store(ProductRequest $request)
+    public function storeProduct(ProductRequest $request)
     {
         $data = $request->validated();
         $data['image_path'] = $request->file('image_path')->store( '', 'public');

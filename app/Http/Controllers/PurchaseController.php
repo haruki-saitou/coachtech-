@@ -13,14 +13,14 @@ use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
-    public function show($item_id)
+    public function showPurchase($item_id)
     {
         $product = Product::findOrFail($item_id);
         $user = Auth::user();
         return view('purchases.show', compact('product', 'user'));
     }
 
-    public function edit(Request $request, $item_id)
+    public function editAddress(Request $request, $item_id)
     {
         if ($request->has('payment_method')) {
             session(['payment_method' => $request->payment_method]);
@@ -29,7 +29,7 @@ class PurchaseController extends Controller
         return view('purchases.edit', compact('user', 'item_id'));
     }
 
-    public function update(UpdateAddressRequest $request)
+    public function updateAddress(UpdateAddressRequest $request)
     {
         $user = Auth::user();
         $user->update([
