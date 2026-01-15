@@ -239,13 +239,13 @@ password
   
   
 ## 使用技術・実行環境  
-- **Backend**: PHP 8.5.0 / Laravel 12.43.1
-- **Frontend**: JavaScript (Vanilla JS), Tailwind CSS v4.0.0, Vite v7.0.7
-- **Database**: MySQL 8.4.7
-- **Infrastructure**: Laravel Sail (Docker環境)
-- **External APIs**: Stripe API (決済)
-- **Tooling**: Node.js v24.11.1, npm
-- **Web Server**: Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
+- **Backend** : PHP 8.5.0 / Laravel 12.43.1
+- **Frontend** : JavaScript (Vanilla JS), Tailwind CSS v4.0.0, Vite v7.0.7
+- **Database** : MySQL 8.4.7
+- **Infrastructure** : Laravel Sail (Docker環境)
+- **External APIs** : Stripe API (決済)
+- **Tooling** : Node.js v24.11.1, npm
+- **Web Server** : Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
 
   
 ## 動作確認フロー
