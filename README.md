@@ -19,11 +19,13 @@
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
 | email              | varchar(255)     |             | ◯          | ◯        |                |
+| email_verified_at  | varchar(255)     |             |            |          |                |
 | password           | varchar(255)     |             |            | ◯        |                |
 | image_path         | varchar(255)     |             |            |          |                |
-| post_code          | varchar(255)     |             |            | ◯        |                |
-| address            | varchar(255)     |             |            | ◯        |                |
+| post_code          | varchar(255)     |             |            |          |                |
+| address            | varchar(255)     |             |            |          |                |
 | building           | varchar(255)     |             |            |          |                |
+| remember_token     | varchar(100)     |             |            | ◯        |                |
 | created_at         | timestamp        |             |            | ◯        |                |
 | updated_at         | timestamp        |             |            | ◯        |                |
 
@@ -33,75 +35,75 @@
 | カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
+| condition_id       | unsigned bigint  |             |            | ◯        | conditions(id) |
 | name               | varchar(255)     |             |            | ◯        |                |
 | price              | unsigned integer |             |            | ◯        |                |
 | brand_name         | varchar(255)     |             |            |          |                |
 | description        | text             |             |            | ◯        |                |
 | image_path         | varchar(255)     |             |            | ◯        |                |
-| condition_id       | unsigned bigint  |             |            | ◯        | conditions(id) |
 | is_sold            | boolean          |             |            | ◯        |                |
-| created_at          | timestamp       |             |            |◯         |                |
-| updated_at          | timestamp       |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| Categoriesテーブル     |                  |             |            |          |                |
+| Categoriesテーブル   |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp       |             |            |◯         |                |
-| updated_at          | timestamp       |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| Commentsテーブル |                  |             |            |          |                |
+| Commentsテーブル     |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
 | comment            | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |◯         |                |
-| updated_at          | timestamp        |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| Conditionsテーブル     |                  |             |            |          |                |
+| Conditionsテーブル   |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | name               | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |◯         |                |
-| updated_at          | timestamp        |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| Ordersテーブル         |                  |             |            |          |                |
+| Ordersテーブル       |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
 | payment_method     | varchar(255)     |             |            | ◯        |                |
-| created_at          | timestamp        |             |            |◯         |                |
-| updated_at          | timestamp        |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| Likesテーブル     |                  |             |            |          |                |
+| Likesテーブル        |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名            | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | user_id            | unsigned bigint  |             |            | ◯        | users(id)      |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
-| created_at          | timestamp        |             |            |◯         |                |
-| updated_at          | timestamp        |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
-| category_productテーブル     |                  |             |            |          |                |
+| category_productテーブル |                  |             |            |          |                |
 |--------------------|------------------|-------------|------------|----------|----------------|
-| カラム名               | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名             | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 | id                 | unsigned bigint  | ◯           |            | ◯        |                |
 | category_id        | unsigned bigint  |             |            | ◯        | categories(id)  |
 | product_id         | unsigned bigint  |             |            | ◯        | products(id)   |
-| created_at          | timestamp        |             |            |◯         |                |
-| updated_at          | timestamp        |             |            |◯         |                |
+| created_at         | timestamp        |             |            | ◯        |                |
+| updated_at         | timestamp        |             |            | ◯        |                |
 
 
 ## 環境構築　　  
@@ -236,14 +238,15 @@ password
 ※ migrate:fresh --seed 実行後に利用可能になります。  
   
   
-## 使用技術（実行環境）  
-- php 8.5.0  
-- laravel 12.43.1  
-- Node.js: v24.11.1
-- Stripe API (決済機能)  
-- JavaScript (Vanilla JS)※jQuesy不使用  
-- MySQL 8.4.7  
-- Web Server: Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
+## 使用技術・実行環境  
+- **Backend**: PHP 8.5.0 / Laravel 12.43.1
+- **Frontend**: JavaScript (Vanilla JS), Tailwind CSS v4.0.0, Vite v7.0.7
+- **Database**: MySQL 8.4.7
+- **Infrastructure**: Laravel Sail (Docker環境)
+- **External APIs**: Stripe API (決済)
+- **Tooling**: Node.js v24.11.1, npm
+- **Web Server**: Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
+
   
 ## 動作確認フロー
 1. `http://localhost/register` で新規会員登録を行う。
