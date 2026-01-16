@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Models\Product;
 use App\Http\Requests\PurchaseRequest;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +46,7 @@ class PurchaseController extends Controller
 
     public function checkout(PurchaseRequest $request, $item_id) {
         $product = Product::findOrFail($item_id);
+        $User = Auth::user();
         Stripe::setApiKey(config('services.stripe.secret') ?? env('STRIPE_SECRET'));
 
         $session = Session::create([
@@ -54,7 +54,10 @@ class PurchaseController extends Controller
             'metadata' => [
                 'product_id' => $product->id,
                 'user_id' => Auth::user()->id,
-                'payment_method' => $request->payment_method
+                'payment_method' => $request->payment_method,
+                'post_code' => $User->post_code,
+                'address' => $User->address,
+                'building' => $User->building
             ],
             'mode' => 'payment',
             'success_url' => route('purchase.success', ['item_id' => $product->id]) . '?method=' . $request->payment_method,
@@ -77,6 +80,12 @@ class PurchaseController extends Controller
     }
 
     public function success(Request $request, $item_id) {
+        $product = Product::findOrFail($item_id);
+
+        if (!$product->is_sold) {
+            $product->update(['is_sold' => true]);
+        }
+
         $method = $request->query('method');
 
         if ($method === 'konbini') {

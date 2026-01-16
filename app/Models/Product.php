@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'user_id',
         'condition_id',
@@ -37,9 +39,14 @@ class Product extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     *
+     * * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\User>
+     */
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(User::class, 'likes', 'product_id', 'user_id')->withTimestamps();
     }
 
     public function scopeKeywordSearch($query, $keyword)

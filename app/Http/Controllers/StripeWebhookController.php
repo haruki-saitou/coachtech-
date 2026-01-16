@@ -24,6 +24,9 @@ class StripeWebhookController extends Controller
                 'user_id' => $userId,
                 'product_id' => $productId,
                 'payment_method' => $paymentMethod,
+                'post_code' => $session['metadata']['post_code'],
+                'address' => $session['metadata']['address'],
+                'building' => $session['metadata']['building'],
                 ]);
                 $product->update(['is_sold' => true]);
                 Log::info("【決済完了】商品ID: {$productId}, ユーザーID: {$userId} の注文を受け付けました。");

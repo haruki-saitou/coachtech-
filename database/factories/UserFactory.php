@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'image_path' => null,
             'post_code' => fake()->numerify('###-####'),
-            'address' => fake()->address(),
+            'address' => fake()->prefecture() . fake()->city() . fake()->streetAddress(),
             'building' => fake()->secondaryAddress(),
         ];
     }

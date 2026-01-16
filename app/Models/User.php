@@ -64,4 +64,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     *
+     * *@return\Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Product>
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(Product::class, 'likes', 'user_id', 'product_id')->withTimestamps();
+    }
 }
