@@ -320,7 +320,7 @@ rm -rf node_modules package-lock.json
 ```bash
 ./vendor/bin/sail up -d
 ```   
-**4. 改めて部品をインストールし直します（ここが重要です！）**  
+**4. 改めて部品をインストールし直します**  
 ```bash
 ./vendor/bin/sail npm install
 ```  
