@@ -38,23 +38,10 @@
                 <a href="{{ route('product.show', $product->id) }}"
                     class="flex flex-col items-start group transition-all duration-300 hover:shadow-lg p-2 rounded">
                     <div
-                        class="relative w-full aspect-square bg-gray-200 animate-pulse rounded mb-3 overflow-hidden flex items-center justify-center">
+                        class="relative w-full aspect-square bg-gray-200 rounded mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
-                        @php
-                            $imageSrc = $product->image_path;
-
-                            if (!str_starts_with($imageSrc, 'http')) {
-                                if (str_starts_with($imageSrc, 'images/sample/')) {
-                                    $imageSrc = asset($imageSrc);
-                                }else{
-                                    $imageSrc = asset('storage/' . $imageSrc);
-                                }
-                            }
-                        @endphp
-                            <img src="{{ $imageSrc }}"
-                                alt="{{ $product->name }}"
-                                class="absolute inset-0 w-full h-full object-cover"
-                                onload="this.parentElement.classList.remove('animate-pulse')">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                            class="absolute inset-0 w-full h-full object-cover">
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                                 <span
@@ -107,7 +94,7 @@
                     const newPagination = doc.getElementById('pagination-wrapper');
                     if (newPagination && newPagination.innerHTML.trim() !== "") {
                         document.getElementById('pagination-wrapper').innerHTML = newPagination.innerHTML;
-                    }else{
+                    } else {
                         document.getElementById('pagination-wrapper').remove();
                     }
                     isFetching = false;

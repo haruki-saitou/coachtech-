@@ -50,20 +50,8 @@
                     <div
                         class="relative w-full aspect-square bg-gray-300 rounded-sm mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
-                        @if ($product->image_path)
-                            @php
-                                // 画像パスの出し分けロジック
-                                $imageSrc = $product->image_path;
-                                if (!str_starts_with($imageSrc, 'http')) {
-                                    // サンプル画像（public/images/sample）か ユーザー投稿（storage）か判定
-                                    $imageSrc = str_starts_with($imageSrc, 'images/sample/')
-                                        ? asset($imageSrc)
-                                        : asset('storage/' . $imageSrc);
-                                }
-                            @endphp
-                            <img src="{{ $imageSrc }}" alt="{{ $product->name }}"
-                                class="absolute inset-0 w-full h-full object-cover">
-                        @endif
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                            class="absolute inset-0 w-full h-full object-cover">
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                                 <span class="text-white text-4xl font-black tracking-widest uppercase">

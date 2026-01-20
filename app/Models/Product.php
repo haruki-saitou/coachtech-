@@ -56,4 +56,23 @@ class Product extends Model
         }
         return $query;
     }
+
+    public function getImageUrlAttribute()
+    {
+        $path = $this->image_path;
+
+        if (!$path) {
+            return asset('images/no-image.png'); // 画像がない時の保険
+        }
+
+        if (str_starts_with($path, 'http')) {
+            return $path;
+        }
+
+        if (str_starts_with($path, 'images/sample/')) {
+            return asset($path);
+        }
+
+        return asset('storage/' . $path);
+    }
 }
