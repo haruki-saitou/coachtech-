@@ -22,8 +22,8 @@ class OrderSeeder extends Seeder
             'building' => '渋谷マンション101',
         ]);
 
-        $products = Product::find(3);
-        $products->update(['is_sold' => true]);
+        $product = Product::find(3, ['*']);
+        $product->update(['is_sold' => true]);
 
         Order::create([
             'user_id' => 6,
@@ -33,7 +33,7 @@ class OrderSeeder extends Seeder
             'address' => '東京都渋谷区',
             'building' => '渋谷マンション109',
         ]);
-        $products = Product::find(5);
-        $products->update(['is_sold' => true]);
+        $product = Product::find(5, ['*']);
+        $product->update(['is_sold' => true]);
     }
 }

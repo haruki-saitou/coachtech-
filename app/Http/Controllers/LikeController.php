@@ -9,7 +9,7 @@ class LikeController extends Controller
     public function toggle($item_id)
     {
         $user_id = Auth::id();
-        $like = Like::where('user_id', $user_id)->where('product_id', $item_id)->first();
+        $like = Like::where('user_id', '=', $user_id, 'and')->where('product_id', '=', $item_id, 'and')->first(['*']);
 
         if ($like) {
             $like->delete();

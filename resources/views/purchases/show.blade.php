@@ -16,8 +16,18 @@
                 <div class="flex border-b-[1.5px] border-gray-400 gap-14 pb-12 mb-20]">
                     <div class="w-50 h-50 bg-gray-300 flex-shrink-0 flex items-center justify-center relative rounded-sm">
                         @if ($product->image_path)
-                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/' . $product->image_path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover">
+                            @php
+                                // 画像パスの出し分けロジック
+                                $imageSrc = $product->image_path;
+                                if (!str_starts_with($imageSrc, 'http')) {
+                                    // サンプル画像（public/images/sample）か ユーザー投稿（storage）か判定
+                                    $imageSrc = str_starts_with($imageSrc, 'images/sample/')
+                                        ? asset($imageSrc)
+                                        : asset('storage/' . $imageSrc);
+                                }
+                            @endphp
+                            <img src="{{ $imageSrc }}" alt="{{ $product->name }}"
+                                class="absolute inset-0 w-full h-full object-cover">
                         @endif
                     </div>
                     <div>

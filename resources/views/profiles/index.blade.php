@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="sr-only">プロフィール</h1>
+    <h1 class="sr-only">プロフィール</h1>
     <div class="flex flex-col md:flex-row items-center justify-around my-14 max-w-[1400px] mx-auto px-24 gap-4">
         {{-- プロフィール画像アップロードエリア --}}
         <div class="flex items-center space-x-8">
@@ -51,8 +51,18 @@
                         class="relative w-full aspect-square bg-gray-300 rounded-sm mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
                         @if ($product->image_path)
-                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/' . $product->image_path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover">
+                            @php
+                                // 画像パスの出し分けロジック
+                                $imageSrc = $product->image_path;
+                                if (!str_starts_with($imageSrc, 'http')) {
+                                    // サンプル画像（public/images/sample）か ユーザー投稿（storage）か判定
+                                    $imageSrc = str_starts_with($imageSrc, 'images/sample/')
+                                        ? asset($imageSrc)
+                                        : asset('storage/' . $imageSrc);
+                                }
+                            @endphp
+                            <img src="{{ $imageSrc }}" alt="{{ $product->name }}"
+                                class="absolute inset-0 w-full h-full object-cover">
                         @endif
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">

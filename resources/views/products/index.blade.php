@@ -40,11 +40,21 @@
                     <div
                         class="relative w-full aspect-square bg-gray-200 animate-pulse rounded mb-3 overflow-hidden flex items-center justify-center">
                         <span class="text-gray-600 text-xl font-bold">商品画像</span>
-                        @if ($product->image_path)
-                            <img src="{{ str_starts_with($product->image_path, 'http') ? $product->image_path : asset('storage/' . $product->image_path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover"
+                        @php
+                            $imageSrc = $product->image_path;
+
+                            if (!str_starts_with($imageSrc, 'http')) {
+                                if (str_starts_with($imageSrc, 'images/sample/')) {
+                                    $imageSrc = asset($imageSrc);
+                                }else{
+                                    $imageSrc = asset('storage/' . $imageSrc);
+                                }
+                            }
+                        @endphp
+                            <img src="{{ $imageSrc }}"
+                                alt="{{ $product->name }}"
+                                class="absolute inset-0 w-full h-full object-cover"
                                 onload="this.parentElement.classList.remove('animate-pulse')">
-                        @endif
                         @if ($product->is_sold)
                             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                                 <span
