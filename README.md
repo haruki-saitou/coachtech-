@@ -44,8 +44,8 @@ DB_USERNAME=sail
 DB_PASSWORD=password
 ```  
 #### `.env`の以下の項目を環境に合わせて変更してください。   
-`WWWGROUP=1000`   
-`WWWUSER=1000`  
+`WWWGROUP=ユーザーID`   
+`WWWUSER=グループID`  
 - ユーザーID（WWWUSER）を調べる  
 ```Bash
 #ユーザーID（WWWUSER）を調べる
