@@ -103,7 +103,7 @@ class UserTest extends TestCase
 
         // 3. 認証メール（通知）が送られたことを確認
         // ユーザーを探して、その人に通知が飛んだかチェック
-        $user = \App\Models\User::where('email', 'new@example.com')->first();
+        $user = User::query()->where('email', 'new@example.com')->first();
         \Illuminate\Support\Facades\Notification::assertSentTo(
             $user,
             \Illuminate\Auth\Notifications\VerifyEmail::class

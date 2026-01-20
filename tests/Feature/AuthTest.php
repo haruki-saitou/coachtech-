@@ -101,7 +101,7 @@ class AuthTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $user = User::where('email', 'verify@example.com')->first();
+        $user = User::query()->where('email', 'verify@example.com')->first();
         Notification::assertSentTo($user, VerifyEmail::class);
 
         // 認証URLを叩いてプロフィール画面へ行くか確認
