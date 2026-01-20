@@ -75,7 +75,7 @@ docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php84-composer:latest \
+    laravelsail/php85-composer:latest \
     composer install --ignore-platform-reqs
 ```
 ※フォルダの中に vendor という名前のフォルダが新しくできているか確認してください。  
@@ -122,13 +122,18 @@ CSS/JavaScriptをビルド
 開発環境でのメールテストには、Mailtrapを使用しています。  
 
 「事前準備」  
-1. [Mailtrap](https://mailtrap.io/ja/)にログインし、SMTP設定の Integrations から「Laravel 9+」を選択します。
+1. [Mailtrap](https://mailtrap.io/ja/)にログインする。
 > [!TIP]
 ※別タブで開くことを推奨します。
 Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
-このページを閉じずに別タブで開くことができます。
-  
-2. 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。  
+このページを閉じずに別タブで開くことができます。  
+2. サンドボックスを選択。  
+3. メールサンドボックスのテストを開始する。  
+4. カスタムでLaravelを選択。  
+5. Code Samplesのセレクターで「Laravel 9+」を選択します。
+> [!TIP]
+※表示された内容をcopyをクリックしてコピーしてください。  
+6. 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。  
 `MAIL_HOST`  
 `MAIL_PORT`  
 `MAIL_USERNAME`  
@@ -140,45 +145,64 @@ Macなら Command、Windowsなら Ctrl キーを押しながらクリックす�
 ### 7.Stripeの設定  
 決済機能を有効にするため、Stripeダッシュボードから取得したAPIキーを設定します。  
 「事前準備」  
-1. [Stripeダッシュボード](https://dashboard.stripe.com/login)へログインし開発者タブを開きます。 
+1. [Stripeダッシュボード](https://dashboard.stripe.com/login)へログインします。 
 > [!TIP]
 ※別タブで開くことを推奨します。
 Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
 このページを閉じずに別タブで開くことができます。  
   
-2. 以下のAPIキー（標準キー）を .env に設定してください。
-
+2. ホーム画面の右側に表示されているAPIキー（標準キー）をそれぞれクリックしてコピーします。  
+3. Stripeのテスト用APIキー(トークン)を `.env` にそれぞれ設定してください。  
+  
 | カラム名 | 設定キー |
 |:---|:---|   
 |公開可能キー | STRIPE_KEY | 
 |シークレットキー | STRIPE_SECRET |   
-
-
-Stripeのテスト用APIキー(トークン)を `.env` に設定してください。  
+  
 ```bash
 # 公開可能キーを設定
 STRIPE_KEY=pk_test_...
 # シークレットキーを設定
 STRIPE_SECRET=sk_test_...
-```  
+```   
   
 ---  
 ### 8.Stripe Webhookの設定（決済状態の自動更新に必要）  
 本プロジェクトでは、決済完了（カード・コンビニ等）を正確に検知するためにWebhookを使用しています。  
 ローカル環境で動作確認を行うには、以下の手順で Stripe CLI を起動する必要があります。  
-   
-1. [Stripe CLI](https://docs.stripe.com/stripe-cli) をインストールしてください。
+
+1. 新しくターミナルを開きます。プロジェクトディレクトリに移動。
+```bash
+cd ...
+```  
+2. [Stripe CLI](https://docs.stripe.com/stripe-cli) をインストールしてください。
 > [!TIP]
-※別タブで開くことを推奨します。
+※ 別タブで開くことを推奨します。
 Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
 このページを閉じずに別タブで開くことができます。
-   
-2. ターミナルでStripeにログインします。  
+
+> [!TIP]
+※ Stripe CLIのインストール方法がわからない場合は、
+**Macなら Homebrew、Windowsなら zipダウンロード** を選ぶのが最も安全です。
+インストール後、ターミナルで stripe -v と打ってバージョンが表示されれば成功です。  
+
+3. Homebrewの場合
+```bash
+brew install stripe/stripe-cli/stripe
+```  
+4. ターミナルでStripeにログインします。  
 ```Bash
 #Stripeにログイン
 stripe login
-```  
-3. Webhookの転送を開始します。  
+```
+5. 実行すると Your pairing code is: xxxx-xxxx... と表示され、一時停止します。  
+   次に、Enterキーを押してください。自動的にブラウザ（Stripeの管理画面）が開きます。   
+   ブラウザに「ペアリングコードを承認しますか？」という画面が出るので、  
+   ターミナルに表示されているコード Your pairing code is: の後のコードと  
+   同じであることを確認し、[アクセスを許可する] ボタンをクリックしてください。    
+   ターミナルに Done! The Stripe CLI is configured... と表示されれば完了です。  
+  
+5. Webhookの転送を開始します。  
 ```Bash
 #Webhookの転送を開始
 stripe listen --forward-to localhost/stripe/webhook
@@ -195,8 +219,14 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 ※stripe listen を実行している間のみ、決済後の「Sold」状態への自動更新が機能します。  
 ※確認の為 `.env` は gitignore に含まれているか必ず確認してください。  
 
-    
-設定を変更したので、`.env`を保存後に設定を反映させるため、**新しいターミナル**で以下のコマンドを打ってください。  
+
+新しいターミナルを開きます。  
+プロジェクトに移動
+```bash
+cd ...
+```  
+  
+設定を変更したので、`.env`を保存後に設定を反映させるため、今開いた**新しいターミナル**で以下のコマンドを打ってください。  
 ```bash
 #設定変更を反映(キャッシュクリア)
 ./vendor/bin/sail artisan config:clear
@@ -229,6 +259,40 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 ---  
 ## 動作確認フロー  
   
+### 画像の表示と管理について  
+本プロジェクトでは、動作確認をスムーズに行うため、画像の保存場所を用途別に分けています。  
+  
+- **初期データ（サンプル画像）**: 
+  `public/img/sample/` 内に配置されています。これは Git 管理対象のため、クローン直後から商品一覧などで画像が表示されます。
+- **ユーザー投稿画像（出品・プロフィール）**: 
+  `storage/app/public/` 内に保存されます。これらはプライバシーと軽量化のため Git 管理外（`.gitignore`）となっています。
+  
+### ディレクトリ構造（主要部分）  
+```text
+.
+├── public/
+│   ├── images/
+│   │   ├── COACHTECH.png  <-- ロゴ等の共通素材
+│   │   └── sample/         <-- 【重要】初期データ用画像（Git管理対象）
+│   │       ├── airPods.jpg
+│   │       └── ...
+│   └── storage -> ...     <-- ユーザー投稿画像へのリンク
+└── storage/
+    └── app/
+        └── public/        <-- 実際にユーザーがアップロードした画像の保存先
+```
+  
+|画像の種類|保存場所|役割|
+|:---|:---|:---|
+|初期サンプル|public/images/sample/|php artisan db:seed で入るテスト用画像|
+|ユーザー投稿|storage/app/public/|出品機能やプロフィールで保存される画像|  
+  
+> [!TIP]
+> **もし商品画像が表示されない場合**
+> 1. `public/storage` というショートカット（シンボリックリンク）があるか確認してください。
+> 2. 無い場合は、`./vendor/bin/sail artisan storage:link` を実行してください。
+> 3. 初期データの画像が表示されない場合は、画像ファイルが public/img/sample/ に存在するか確認してください。  
+    
 ### テスト用ログイン情報  
 - email :
 ```bash
@@ -395,7 +459,7 @@ MacBook Air M4を使用して開発。
   
 ### category_productテーブル(カテゴリ・商品中間テーブル）
 
-| カラム名             | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
+| カラム名             | 論理名| 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 |:---|:---|:---|:---:|:---:|:---:|:---:|
 | id                 | ID | bigint unsigned  | **PK**          |  -          | ◯        |     -           |
 | category_id        | カテゴリーID | bigint unsigned  |    -         |    -        | ◯        | categories(id)  |
