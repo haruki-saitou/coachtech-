@@ -11,23 +11,30 @@
 - **Web Server** : Laravel Sail (PHP 8.5.0 Built-in Server) ※将来的にNginx導入予定
 
 ---  
-## 環境構築　　  
+## 環境構築
 
-### Dockerビルド  
-- 作業ディレクトリ上に移動
+### 1. リポジトリのクローン  
+- ターミナルでプロジェクトを作成する場所に移動
 ```bash
-  git clone git@github.com:haruki-saitou/coachtech-frima.git
-```  
-```bash
-  docker compose up -d --build
-```  
-
-### Laravel環境構築  
-
-```bash
-  cp .env.example .env
+cd ...
 ```
-下記の内容に環境変数を変更  
+- リポジトリのクローン  
+```bash
+#リポジトリのクローン
+git clone git@github.com:haruki-saitou/coachtech-frima.git
+cd coachtech-frima
+```  
+  
+### 2.Laravel環境構築  
+```bash
+#`.env`をコピー
+cp .env.example .env
+```
+テキストエディタでプロジェクトを開く  
+```bash
+code .
+```  
+下記の内容に`.env`の環境変数を変更  
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -35,112 +42,175 @@ DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=sail
 DB_PASSWORD=password
+```  
+#### `.env`の以下の項目が正しく設定されているか確認してください。  
+※ `.env.example` にあらかじめ記載済みです。  
+  `WWWGROUP=1000`   
+  `WWWUSER=1000`
+   
+> [!TIP]
+もしビルド時に権限エラーが出る場合は、ご自身のPCのターミナルで以下のコマンドを実行し、  
+表示された数値を `.env` に設定してください。
+  
+- ユーザーID（WWWUSER）を調べる  
+```Bash
+#ユーザーID（WWWUSER）を調べる
+id -u
+```  
+- グループID（WWWGROUP）を調べる  
+```Bash
+#グループID（WWWGROUP）を調べる
+id -g
 ```
-※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応済みです。  
+※ 多くのLinux/Mac環境では 1000 または 501 になります。  
+  
+  
+---  
+### 3.Sail本体のインストール（初回必須）  
+クローン直後は vendor ディレクトリがないため、  
+一時的なコンテナを使用して依存関係を解消します。  
+```Bash
+#一時的なコンテナを作成とSailのインストール
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+```
+※フォルダの中に vendor という名前のフォルダが新しくできているか確認してください。  
+  
+---  
+### 4.コンテナの起動と初期化
+  
+> ※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応。
+  
+Dockerコンテナをバックグラウンドで起動。  
 ```bash
-  ./vendor/bin/sail up -d
+#Docker起動
+./vendor/bin/sail up -d
 ```  
+アプリの初期設定を一括で行います。(キー生成・リンク作成・DB構築)  
 ```bash
-  ./vendor/bin/sail composer install
+#キー生成・リンク作成・DB構築
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan storage:link
+./vendor/bin/sail artisan migrate:fresh --seed
 ```  
+   
+---  
+### 5.フロントエンドのライブラリ（Tailwindなど）をインストール  
 ```bash
-  ./vendor/bin/sail artisan key:generate
-```  
-フロントエンドのライブラリ（Tailwindなど）をインストール  
-```bash
-  ./vendor/bin/sail npm install
+#ライブラリをインストール
+./vendor/bin/sail npm install
 ```  
 CSS/JavaScriptをビルド  
 ```bash
-  ./vendor/bin/sail npm run build
-```
-```bash
-  ./vendor/bin/sail artisan storage:link
-```
-```bash
-  ./vendor/bin/sail artisan migrate:fresh --seed
-```
-```bash
-./vendor/bin/sail npm run dev
+#ライブラリをビルド
+./vendor/bin/sail npm run build
 ```  
+```bash
+#ライブラリの起動
+./vendor/bin/sail npm run dev
+```
+
+> [!IMPORTANT]
 ※ `./vendor/bin/sail npm run dev` を実行しているターミナルは、閉じずにそのままにしておいてください。  
   
 ---  
-### メール認証の設定について  
+### 6.メール認証の設定について  
 開発環境でのメールテストには、Mailtrapを使用しています。  
+
+「事前準備」  
+1. [Mailtrap](https://mailtrap.io/ja/)にログインし、SMTP設定の Integrations から「Laravel 9+」を選択します。
+> [!TIP]
+※別タブで開くことを推奨します。
+Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
+このページを閉じずに別タブで開くことができます。
   
-- [Mailtrap](https://mailtrap.io/)にログインし、SMTP設定の Integrations から「Laravel 9+」を選択します。
-- 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。  
+2. 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。  
 `MAIL_HOST`  
 `MAIL_PORT`  
 `MAIL_USERNAME`  
-`MAIL_PASSWORD`  
-- これにより、新規登録時の認証メールが Mailtrap の管理画面上で確認できるようになります。
+`MAIL_PASSWORD`
   
-### Stripeの設定  
-Stripeへログイン  
-```bash
-https://dashboard.stripe.com/login
-```  
-設定 → 開発者 → 下記にある標準キーの  
-公開可能キー : STRIPE_KEY  
-シークレットキー : STRIPE_SECRET  
-Stripeのテスト用APIキー(トークン)を `.env` に設定してください。  
-```bash
-STRIPE_KEY=pk_test_...
-STRIPE_SECRET=sk_test_...
-```
+これにより、新規登録時の認証メールが Mailtrap の管理画面上で確認できるようになります。
 
 ---  
-### Stripe Webhookの設定（決済状態の自動更新に必要）  
+### 7.Stripeの設定  
+決済機能を有効にするため、Stripeダッシュボードから取得したAPIキーを設定します。  
+「事前準備」  
+1. [Stripeダッシュボード](https://dashboard.stripe.com/login)へログインし開発者タブを開きます。 
+> [!TIP]
+※別タブで開くことを推奨します。
+Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
+このページを閉じずに別タブで開くことができます。  
+  
+2. 以下のAPIキー（標準キー）を .env に設定してください。
+
+| カラム名 | 設定キー |
+|:---|:---|   
+|公開可能キー | STRIPE_KEY | 
+|シークレットキー | STRIPE_SECRET |   
+
+
+Stripeのテスト用APIキー(トークン)を `.env` に設定してください。  
+```bash
+# 公開可能キーを設定
+STRIPE_KEY=pk_test_...
+# シークレットキーを設定
+STRIPE_SECRET=sk_test_...
+```  
+  
+---  
+### 8.Stripe Webhookの設定（決済状態の自動更新に必要）  
 本プロジェクトでは、決済完了（カード・コンビニ等）を正確に検知するためにWebhookを使用しています。  
 ローカル環境で動作確認を行うには、以下の手順で Stripe CLI を起動する必要があります。  
    
-1. Stripe CLI をインストールしてください。  
+1. [Stripe CLI](https://docs.stripe.com/stripe-cli) をインストールしてください。
+> [!TIP]
+※別タブで開くことを推奨します。
+Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
+このページを閉じずに別タブで開くことができます。
+   
 2. ターミナルでStripeにログインします。  
 ```Bash
+#Stripeにログイン
 stripe login
 ```  
 3. Webhookの転送を開始します。  
 ```Bash
+#Webhookの転送を開始
 stripe listen --forward-to localhost/stripe/webhook
 ```
+> [!IMPORTANT]
 ※ stripe listen を実行しているターミナルは、閉じずにそのままにしておいてください。  
-  
+
+    
 ターミナルに表示された whsec_ で始まる署名シークレットを `.env` に追記してください。  
-```Bash
+`
 STRIPE_WEBHOOK_SECRET=whsec_...
-```  
+`   
+> [!IMPORTANT]
 ※stripe listen を実行している間のみ、決済後の「Sold」状態への自動更新が機能します。  
-  
-設定を変更したので、`.env`を保存後に設定を反映させるため、新しいターミナルで以下のコマンドを打ってください。  
+※確認の為 `.env` は gitignore に含まれているか必ず確認してください。  
+
+    
+設定を変更したので、`.env`を保存後に設定を反映させるため、**新しいターミナル**で以下のコマンドを打ってください。  
 ```bash
+#設定変更を反映(キャッシュクリア)
 ./vendor/bin/sail artisan config:clear
 ```  
 ※キャッシュをクリアしたので、そのままブラウザで動作確認してください。  
-  
---- 
-### テスト用ログイン情報  
-- name :
-```bash
-テストユーザー
-```
-- email :
-```bash
-test@example.com
-```
-- password : 
-```bash
-password
-```
-※ migrate:fresh --seed 実行後に利用可能になります。  
 
+  
 ---   
 ## テストケース  
 本プロジェクトでは、テストケース一覧の要件に基づいた全16項目の自動テストを実装しています。  
   
-### テストの実行方法
+**テストの実行方法**  
 ```Bash
+#全16項目の自動テストを実装
 ./vendor/bin/sail artisan test
 ```
   
@@ -157,7 +227,19 @@ password
 | **UserTest** | 13, 14, 16 | マイページ表示・初期値保持・メール認証フロー |
   
 ---  
-## 動作確認フロー
+## 動作確認フロー  
+  
+### テスト用ログイン情報  
+- email :
+```bash
+test@example.com
+```
+- password : 
+```bash
+password
+```
+> ※ migrate:fresh --seed 実行後に利用可能になります。  
+
 1. `http://localhost/register` で新規会員登録を行う。
 2. `Mailtrap` に届く認証メール内のリンクをクリックする。
 3. 自動でプロフィール設定画面へ移動することを確認後、「画像」、「郵便番号」、「住所」、「建物名」を登録する。
@@ -174,19 +256,34 @@ cvc : 適当な番号で問題ありません。
       
 ---  
 ## 開発環境　  
-MacBook Air M4を使用しています。  
-- 会員登録画面: http://localhost/register
-- ログイン画面: http://localhost/login
-- メール認証誘導画面: http://localhost/email/verify
-- 商品一覧画面（トップ画面）: http://localhost/
-- 商品詳細画面: http://localhost/item/{item_id}
-- 商品出品画面: http://localhost/sell
-- 商品購入画面: http://localhost/purchase/{item_id}
-- 送付先住所変更画面: http://localhost/purchase/address/{item_id}?payment_method=
-- プロフィール画面: http://localhost/mypage
-- プロフィール編集画面（設定画面）: http://localhost/mypage/profile
-- phpMyAdmin: http://localhost:8080/
+MacBook Air M4を使用して開発。  
+[**認証**]  
   
+- 会員登録画面: http://localhost/register  
+- ログイン画面: http://localhost/login  
+- メール認証誘導画面: http://localhost/email/verify
+  
+[**商品**]
+  
+- 商品一覧画面（トップ画面）: http://localhost/  
+- 商品詳細画面: http://localhost/item/{item_id}  
+- 商品出品画面: http://localhost/sell
+  
+[**購入**]
+  
+- 商品購入画面: http://localhost/purchase/{item_id}  
+- 送付先住所変更画面: http://localhost/purchase/address/{item_id}?payment_method=
+  
+[**ユーザー**]
+  
+- プロフィール画面: http://localhost/mypage  
+- プロフィール編集画面（設定画面）: http://localhost/mypage/profile
+  
+[**ツール**]
+  
+- phpMyAdmin: http://localhost:8080/  
+
+    
 ---  
 ## テーブル設計  
 ※全体設計として、ER図に基づきリレーションを構成しています。
@@ -201,100 +298,111 @@ MacBook Air M4を使用しています。
 - category_product(多) : Categories(1)
   
 ---  
-| Usersテーブル       |       |           |             |            |          |                |
-|--------------------|-------|------------------|-------------|------------|----------|----------------|
+
+  
+### Usersテーブル(ユーザー情報)
+
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID    | bigint unsigned  | PK          |            | ◯        |                |
-| name               | 氏名   | varchar(255)     |             |            | ◯        |                |
-| email              | メールアドレス | varchar(255)     |             | UQ         | ◯        |                |
-| email_verified_at  | メール認証日時 | varchar(255)     |             |            |          |                |
-| password           | パスワード    | varchar(255)     |             |            | ◯        |                |
-| image_path         | プロフィール画像パス | varchar(255)     |             |            |          |                |
-| post_code          | 郵便番号      | varchar(255)     |             |            |          |                |
-| address            | 住所         | varchar(255)     |             |            |          |                |
-| building           | 建物名       | varchar(255)     |             |            |          |                |
-| remember_token     | ログイン保持用トークン            |varchar(100)     |             |            | ◯        |                |
-| created_at         | 作成日時            |timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時            |timestamp        |             |            | ◯        |                |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| id                 | ID    | bigint unsigned  | **PK**         |    -        | ◯        |    -            |
+| name               | 氏名   | varchar(255)     |     -        |     -       | ◯        |    -            |
+| email              | メールアドレス | varchar(255)     |     -        | **UQ**        | ◯        |   -             |
+| email_verified_at  | メール認証日時 | timestamp     |     -        |    -        |   -       |   -             |
+| password           | パスワード    | varchar(255)     |    -         |    -        | ◯        |  -              |
+| image_path         | プロフィール画像パス | varchar(255)     |    -         |   -         |   -       |  -              |
+| post_code          | 郵便番号      | varchar(255)     |    -         |   -         |   -       |    -            |
+| address            | 住所         | varchar(255)     |   -          |  -          |   -       |    -            |
+| building           | 建物名       | varchar(255)     |   -          |  -          |  -        |    -            |
+| remember_token     | ログイン保持用トークン            |varchar(100)     |   -          |  -          | ◯        |     -           |
+| created_at         | 作成日時            |timestamp        |  -           |   -         | ◯        |     -           |
+| updated_at         | 更新日時            |timestamp        |  -           |   -         | ◯        |     -           |
 
+  
+### Productsテーブル(商品情報)
 
-| Productsテーブル     |        |                  |             |            |          |                |
-|--------------------|--------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| user_id            | 出品者ID | bigint unsigned  |             |            | ◯        | users(id)      |
-| condition_id       | 商品の状態ID | bigint unsigned  |             |            | ◯        | conditions(id) |
-| name               | 商品名 | varchar(255)     |             |            | ◯        |                |
-| price              | 価格 | unsigned integer |             |            | ◯        |                |
-| brand_name         | ブランド名 | varchar(255)     |             |            |          |                |
-| description        | 商品説明 | text             |             |            | ◯        |                |
-| image_path         | 商品画像パス | varchar(255)     |             |            | ◯        |                |
-| is_sold            | 販売ステータス | boolean          |             |            | ◯        |                |
-| created_at         | 作成日時          |timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時          |timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |   -         | ◯        |    -            |
+| user_id            | 出品者ID | bigint unsigned  |     -        |  -          | ◯        | users(id)      |
+| condition_id       | 商品の状態ID | bigint unsigned  |   -          |  -          | ◯        | conditions(id) |
+| name               | 商品名 | varchar(255)     |    -         |   -         | ◯        |    -            |
+| price              | 価格 | unsigned integer |   -          |   -         | ◯        |   -             |
+| brand_name         | ブランド名 | varchar(255)     |  -           | -           |   -       |  -              |
+| description        | 商品説明 | text             |    -         |   -         | ◯        |     -           |
+| image_path         | 商品画像パス | varchar(255)     |    -         |   -         | ◯        |    -            |
+| is_sold            | 販売ステータス | boolean          |    -         |    -        | ◯        |    -            |
+| created_at         | 作成日時          |timestamp        |  -           |  -          | ◯        |   -             |
+| updated_at         | 更新日時          |timestamp        |  -           |   -         | ◯        |   -             |
 
+  
+### Categoriesテーブル(カテゴリ情報)
 
-| Categoriesテーブル   |    |                  |             |            |          |                |
-|--------------------|-----|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| name               | カテゴリー名 | varchar(255)     |             |            | ◯        |                |
-| created_at         | 作成日時 | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時 | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**         |     -       | ◯        |     -           |
+| name               | カテゴリー名 | varchar(255)     |   -          |    -        | ◯        |   -             |
+| created_at         | 作成日時 | timestamp        |     -        |    -        | ◯        |   -             |
+| updated_at         | 更新日時 | timestamp        |     -        |    -        | ◯        |   -             |
 
+  
+### Commentsテーブル(コメント情報)
 
-| Commentsテーブル     |      |                  |             |            |          |                |
-|--------------------|-------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| user_id            | コメントユーザーID | bigint unsigned  |             |            | ◯        | users(id)      |
-| product_id         | コメント商品ID | bigint unsigned  |             |            | ◯        | products(id)   |
-| comment            | コメント | varchar(255)     |             |            | ◯        |                |
-| created_at         | 作成日時        | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時        | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |    -        | ◯        |    -            |
+| user_id            | コメントユーザーID | bigint unsigned  |   -          |    -        | ◯        | users(id)      |
+| product_id         | コメント商品ID | bigint unsigned  |     -        |    -        | ◯        | products(id)   |
+| comment            | コメント | varchar(255)     |      -       |     -       | ◯        |     -           |
+| created_at         | 作成日時        | timestamp        |     -        |  -          | ◯        |   -             |
+| updated_at         | 更新日時        | timestamp        |     -        |  -          | ◯        |   -             |
 
+  
+### Conditionsテーブル(商品状態情報)
 
-| Conditionsテーブル   |      |                  |             |            |          |                |
-|--------------------|-------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| name               | 商品状態 | varchar(255)     |             |            | ◯        |                |
-| created_at         | 作成日時        | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時        | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |   -         | ◯        |    -            |
+| name               | 商品状態 | varchar(255)     |     -        |  -          | ◯        |   -             |
+| created_at         | 作成日時        | timestamp        |    -         |  -          | ◯        |     -           |
+| updated_at         | 更新日時        | timestamp        |    -         |  -          | ◯        |     -           |
 
+  
+### Ordersテーブル(購入履歴情報)
 
-| Ordersテーブル       |       |                  |             |            |          |                |
-|--------------------|--------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| user_id            | 購入者ID | bigint unsigned  |             |            | ◯        | users(id)      |
-| product_id         | 購入商品ID | bigint unsigned  |             |            | ◯        | products(id)   |
-| payment_method     | 支払い方法 | varchar(255)     |             |            | ◯        |                |
-| post_code          | 配送先郵便番号 | varchar(255)     |             |            | ◯        |                |
-| address            | 配送先住所 | varchar(255)     |             |            | ◯        |                |
-| building           | 配送先建物名 | varchar(255)     |             |            | ◯        |                |
-| created_at         | 作成日時           | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時           | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |    -        | ◯        |    -            |
+| user_id            | 購入者ID | bigint unsigned  |     -        |   -         | ◯        | users(id)      |
+| product_id         | 購入商品ID | bigint unsigned  |   -          |  -          | ◯        | products(id)   |
+| payment_method     | 支払い方法 | varchar(255)     |   -          |  -          | ◯        |   -             |
+| post_code          | 配送先郵便番号 | varchar(255)     |  -           | -           | ◯        |    -            |
+| address            | 配送先住所 | varchar(255)     |   -          |   -         | ◯        |     -           |
+| building           | 配送先建物名 | varchar(255)     |  -           |  -          | ◯        |    -            |
+| created_at         | 作成日時           | timestamp        |   -          |  -          | ◯        |   -             |
+| updated_at         | 更新日時           | timestamp        |   -          |  -          | ◯        |   -             |
 
+  
+### Likesテーブル(お気に入り情報)
 
-| Likesテーブル        |       |                  |             |            |          |                |
-|--------------------|--------|------------------|-------------|------------|----------|----------------|
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| user_id            | お気に入りしたユーザーID | bigint unsigned  |             |            | ◯        | users(id)      |
-| product_id         | お気に入りした商品ID | bigint unsigned  |             |            | ◯        | products(id)   |
-| created_at         | 作成日時                  | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時                  | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |    -        | ◯        |  -              |
+| user_id            | お気に入りしたユーザーID | bigint unsigned  |    -         |  -          | ◯        | users(id)      |
+| product_id         | お気に入りした商品ID | bigint unsigned  |     -        |   -         | ◯        | products(id)   |
+| created_at         | 作成日時                  | timestamp        |     -        |     -       | ◯        |     -           |
+| updated_at         | 更新日時                  | timestamp        |     -        |     -       | ◯        |     -           |
+  
+  
+### category_productテーブル(カテゴリ・商品中間テーブル）
 
-
-| category_productテーブル |                  |             |            |          |                |
-|--------------------|------------------|-------------|------------|----------|----------------|
 | カラム名             | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
-| id                 | ID | bigint unsigned  | PK          |            | ◯        |                |
-| category_id        | カテゴリーID | bigint unsigned  |             |            | ◯        | categories(id)  |
-| product_id         | 商品ID | bigint unsigned  |             |            | ◯        | products(id)   |
-| created_at         | 作成日時 | timestamp        |             |            | ◯        |                |
-| updated_at         | 更新日時 | timestamp        |             |            | ◯        |                |
+|:---|:---|:---|:---:|:---:|:---:|:---:|
+| id                 | ID | bigint unsigned  | **PK**          |  -          | ◯        |     -           |
+| category_id        | カテゴリーID | bigint unsigned  |    -         |    -        | ◯        | categories(id)  |
+| product_id         | 商品ID | bigint unsigned  |     -        |        -    | ◯        | products(id)   |
+| created_at         | 作成日時 | timestamp        |     -        |        -    | ◯        |     -           |
+| updated_at         | 更新日時 | timestamp        |      -       |         -   | ◯        |     -           |
+
   
 ---  
 ## ER図  
@@ -309,23 +417,28 @@ Docker(Sail)環境とローカル環境の依存関係の不整合が原因で�
   
 **1. 念のため、現在動いているSailを停止させます**  
 ```bash
+#現在動いているSailを停止
 ./vendor/bin/sail stop
 ```  
 **2. 古い部品（フォルダ）と、設定の記録（ファイル）を削除します**  
-※ Mac/Linuxのコマンドです。慎重に実行してください。  
+> ※ Mac/Linuxのコマンドです。慎重に実行してください。  
 ```bash
+#古い部品（フォルダ）と、設定の記録（ファイル）を削除
 rm -rf node_modules package-lock.json
 ```  
 **3. Sailをバックグラウンドで起動します**  
 ```bash
+#Sailをバックグラウンドで起動
 ./vendor/bin/sail up -d
 ```   
 **4. 改めて部品をインストールし直します**  
 ```bash
+#再インストール
 ./vendor/bin/sail npm install
 ```  
 **5. 再度、起動を試みます** 
 ```bash
+#再起動
 ./vendor/bin/sail npm run dev
 ```  
    
